@@ -90,14 +90,14 @@ public site) for exactly what's outstanding and where those claims live in the c
 | Language             | TypeScript                                |
 | Content              | Astro Content Collections (Zod schemas)   |
 | Styling              | Plain CSS with design tokens (no Tailwind/Bootstrap/MUI) |
-| Fonts                | Self-hosted via `@fontsource` (Fraunces + Inter) |
+| Fonts                | Self-hosted via `@fontsource` (Source Serif 4 + Inter) |
 | Sitemap              | `@astrojs/sitemap`                        |
 | Tests                | Playwright (smoke, navigation, accessibility, link-check) |
 | Lint                 | ESLint + `eslint-plugin-astro` + `typescript-eslint` |
 
 ## Running locally
 
-Requires Node.js 20+.
+Requires Node.js 22.12+ (Astro 7's minimum).
 
 ```bash
 npm install          # install dependencies
@@ -106,8 +106,15 @@ npm run typecheck     # astro check (types + template diagnostics)
 npm run lint          # eslint
 npm run build          # typecheck + production build to dist/
 npm run preview        # serve the built dist/ locally, as production would
-npm test               # build, then run the Playwright suite against the preview server
+npm test               # build, then run the Playwright suite against a static server
+npm run launch:check   # build, then scan dist/ for demo-content leakage and structural issues
 ```
+
+By default `npm run dev` and `npm run build` render the site exactly as it
+will ship: no demo artists, performances, events or archive entries. Set
+`PUBLIC_SHOW_DEMO_CONTENT=true` in your `.env` if you want to see the site
+laid out with sample content locally — see [Demo content and
+`showDemoContent`](#demo-content-and-showdemocontent).
 
 ## Repository structure
 
@@ -125,11 +132,14 @@ public/
   brand/          Logo/favicon assets (see below)
   images/         Generated placeholder/motif art used by demo content
 docs/
-  CONTENT_GUIDE.md          Editorial tone and content-writing guidance
-  BRAND_GUIDE.md             Positioning, colour, type, spacing, imagery, logo, Ragam treatment
-  HERITAGE_VERIFICATION.md   Internal — facts still pending documentary verification
+  CONTENT_GUIDE.md            Editorial tone and content-writing guidance
+  BRAND_GUIDE.md               Positioning, colour, type, spacing, imagery, logo, Ragam treatment
+  HERITAGE_VERIFICATION.md     Internal — facts still pending documentary verification
+  DOMAIN_REDIRECTS.md          Canonical domain + redirect policy for sarasudha.in
+  SEARCH_LAUNCH.md             Google Search Console / Bing Webmaster launch checklist
+  PUBLIC_LAUNCH_CHECKLIST.md   The actual go-live checklist
 tests/            Playwright specs (routes, navigation, accessibility, link-check)
-scripts/          One-off content/asset generation scripts (not part of the build)
+scripts/          One-off content/asset generation scripts, plus launch-check.mjs (not part of the build)
 ```
 
 ### Information architecture
@@ -143,7 +153,7 @@ scripts/          One-off content/asset generation scripts (not part of the buil
 | `/artists`, `/artists/[slug]` | Artists index + profile |
 | `/events` | Events (upcoming/past) |
 | `/heritage` | Heritage / Archive |
-| `/participate` | Participate (Perform / Attend / Contribute / Support) |
+| `/participate` | Participate (Perform / Collaborate / Archive / Volunteer / Partner / Stay Connected) |
 | `/contact` | Contact |
 | `/privacy`, `/terms` | Legal |
 
@@ -196,13 +206,22 @@ Every collection entry has an `isDemoContent` flag. The site-wide switch lives i
 `src/config/site.ts`:
 
 ```ts
-export const showDemoContent = import.meta.env.PUBLIC_SHOW_DEMO_CONTENT !== 'false';
+export const showDemoContent = import.meta.env.PUBLIC_SHOW_DEMO_CONTENT === 'true';
 ```
 
-Set `PUBLIC_SHOW_DEMO_CONTENT=false` (see `.env.example`) for a production build once real content
-exists, and demo-flagged entries stop rendering everywhere automatically — no per-page changes
-needed. Pages that show demo events/performances also render a labelled "Demo content" note on each
-card while demo content is on.
+**It defaults to `false`.** A plain `npm run build` or `npm run dev` never renders demo-flagged
+artists, performances, events or archive entries — this is what ships to production. Set
+`PUBLIC_SHOW_DEMO_CONTENT=true` (see `.env.example`) only when you want to preview the site laid out
+with sample content locally. Pages that would otherwise show demo events/performances render a
+labelled "Demo content" note on each card while demo content is explicitly turned on.
+
+When there is no real content in a collection, the corresponding page renders a **launch state**
+(`src/components/LaunchState.astro`) instead of an empty grid or invented content — a confident,
+honest "nothing here yet, here's how to help build it" section with a real call to action (e.g.
+`/participate?path=perform`). These sections switch back to the normal browse/filter UI automatically
+the moment real, non-demo content exists in that collection — no code change required. See
+`docs/PUBLIC_LAUNCH_CHECKLIST.md` for the full pre-launch checklist and `npm run launch:check` for an
+automated scan of the built output for demo-content leakage.
 
 ## Replacing logos and brand assets
 
@@ -267,7 +286,7 @@ See `.env.example` for the full, commented list. Summary:
 | Variable | Purpose | Default |
 | -------- | ------- | ------- |
 | `PUBLIC_CONTACT_FORM_ENDPOINT` | Contact form submission URL | unset (demo mode) |
-| `PUBLIC_SHOW_DEMO_CONTENT` | Show/hide demo-flagged content | `true` |
+| `PUBLIC_SHOW_DEMO_CONTENT` | Show/hide demo-flagged content | `false` |
 | `PUBLIC_ANALYTICS_PROVIDER`, `PUBLIC_ANALYTICS_ID` | Optional analytics | unset (no analytics loads) |
 
 None are required for `npm run dev` or `npm run build` to work.
@@ -291,8 +310,9 @@ before deploying.
 npm test
 ```
 
-`pretest` runs `npm run build` automatically, then Playwright runs against the built site via
-`astro preview`. The suite covers:
+`pretest` runs `npm run build` automatically, then Playwright runs against the built `dist/` output
+served statically (`npm run test:serve`, via the `serve` package — `astro preview` daemonizes itself
+in this Astro version and isn't compatible with Playwright's `webServer` option). The suite covers:
 
 - **`tests/routes.spec.ts`** — every primary route returns 200, renders exactly one `<h1>`, has a
   branded `<title>`, throws no console errors, and an unknown route returns a proper 404.
@@ -304,6 +324,12 @@ npm test
   any doesn't resolve to a real file (a lightweight broken-link check).
 - **Content schema validation** happens implicitly: `astro build` fails immediately if any Markdown
   frontmatter doesn't match its Zod schema in `src/content.config.ts`.
+- **`tests/launch-state.spec.ts`** — the zero-content "launch state" behaviour on every page, run
+  against the default (`PUBLIC_SHOW_DEMO_CONTENT` unset) build.
+
+`npm test` always runs against a plain production build — no demo content. To verify the
+demo-content-on preview state (used for local development), run `npm run test:demo`, which builds
+with `PUBLIC_SHOW_DEMO_CONTENT=true` and runs `tests-demo/demo-content.spec.ts` against it.
 
 Playwright uses whatever Chromium build `npx playwright install` downloads for your machine. If
 you're running in an environment with a pre-installed browser at a different path (as this project
@@ -416,5 +442,8 @@ they can be added without a rewrite:
 
 ---
 
-Also see: [`docs/CONTENT_GUIDE.md`](docs/CONTENT_GUIDE.md) (editorial tone) and
-[`docs/BRAND_GUIDE.md`](docs/BRAND_GUIDE.md) (positioning, colour, type, Ragam treatment).
+Also see: [`docs/CONTENT_GUIDE.md`](docs/CONTENT_GUIDE.md) (editorial tone),
+[`docs/BRAND_GUIDE.md`](docs/BRAND_GUIDE.md) (positioning, colour, type, Ragam treatment), and for
+launch readiness: [`docs/PUBLIC_LAUNCH_CHECKLIST.md`](docs/PUBLIC_LAUNCH_CHECKLIST.md),
+[`docs/DOMAIN_REDIRECTS.md`](docs/DOMAIN_REDIRECTS.md) and
+[`docs/SEARCH_LAUNCH.md`](docs/SEARCH_LAUNCH.md).
