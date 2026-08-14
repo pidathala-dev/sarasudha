@@ -1,0 +1,135 @@
+---
+/**
+ * Confident "not yet, but here's what's coming and how to be part of it"
+ * state for sections that have zero real content. Distinct from
+ * EmptyState, which is a smaller, quieter placeholder used for granular
+ * sub-sections (e.g. a single archive category). LaunchState is the
+ * primary building block for Phase 1.2's zero-content page states — see
+ * docs/PUBLIC_LAUNCH_CHECKLIST.md.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  /** Optional short italic line beneath the description — a specific, honest detail. */
+  contextLine?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  variant?: 'light' | 'alt' | 'inverse';
+  motif?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  contextLine,
+  primaryLabel,
+  primaryHref,
+  secondaryLabel,
+  secondaryHref,
+  variant = 'light',
+  motif = true,
+} = Astro.props;
+---
+
+<div class={`launch-state launch-state--${variant}`}>
+  {motif && <div class="launch-state__motif" aria-hidden="true"></div>}
+  {eyebrow && <p class="eyebrow launch-state__eyebrow">{eyebrow}</p>}
+  <h3 class="launch-state__title">{title}</h3>
+  <p class="launch-state__description">{description}</p>
+  {contextLine && <p class="launch-state__context">{contextLine}</p>}
+  {
+    (primaryLabel && primaryHref) || (secondaryLabel && secondaryHref) ? (
+      <div class="launch-state__actions">
+        {primaryLabel && primaryHref && (
+          <a href={primaryHref} class="btn btn-primary">
+            {primaryLabel}
+          </a>
+        )}
+        {secondaryLabel && secondaryHref && (
+          <a href={secondaryHref} class="btn btn-secondary">
+            {secondaryLabel}
+          </a>
+        )}
+      </div>
+    ) : null
+  }
+</div>
+
+<style>
+  .launch-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: var(--space-3);
+    padding: var(--space-7) var(--space-6);
+    border-radius: var(--radius-lg);
+    max-width: 40rem;
+  }
+
+  .launch-state--light,
+  .launch-state--alt {
+    border: var(--border-hairline);
+    background: var(--color-warm-white);
+  }
+
+  .launch-state--alt {
+    background: var(--color-bg);
+  }
+
+  .launch-state--inverse {
+    background: color-mix(in srgb, var(--color-warm-white) 6%, transparent);
+    border: 1px solid var(--color-border-inverse);
+    color: var(--color-text-inverse);
+  }
+
+  .launch-state__motif {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--color-gold-antique), var(--color-teal));
+  }
+
+  .launch-state__eyebrow {
+    margin-top: var(--space-1);
+  }
+
+  .launch-state__title {
+    font-size: var(--fs-500);
+  }
+
+  .launch-state--inverse .launch-state__title {
+    color: var(--color-text-inverse);
+  }
+
+  .launch-state__description {
+    color: var(--color-text-muted);
+    font-size: var(--fs-300);
+    max-width: 34rem;
+  }
+
+  .launch-state--inverse .launch-state__description {
+    color: var(--color-text-inverse-muted);
+  }
+
+  .launch-state__context {
+    font-style: italic;
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+
+  .launch-state--inverse .launch-state__context {
+    color: var(--color-text-inverse-muted);
+  }
+
+  .launch-state__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+</style>
