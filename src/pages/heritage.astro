@@ -26,19 +26,34 @@ const categories = [
 const timelineItems = [
   {
     marker: '1984',
-    title: 'Annamacharya Kalabharati',
-    subtitle: 'Cuddapah · Regn. No. 217/1984',
+    title: 'Annamacharya Kalabharati',
+    subtitle: 'Cuddapah · Regn. No. 217/1984',
     description: 'A cultural initiative bringing music, artists and community together.',
   },
   {
-    marker: '2026',
-    title: 'Sarasudha',
-    description: 'A new chapter — the archive finds a digital home, inspired by that cultural journey.',
+    marker: '1997',
+    title: 'A community milestone',
+    description: 'Public support was sought for a Mandapam, which opened on 22 May 1997.',
+  },
+  {
+    marker: '1998',
+    title: '495th Vardhanti',
+    description: 'Observances marking Annamacharya’s Vardhanti, recorded 25 March 1998.',
+  },
+  {
+    marker: '2001',
+    title: '593rd Jayanti',
+    description: 'Further Jayanti programmes recorded 7–8 May 2001.',
+  },
+  {
+    marker: '2010',
+    title: 'Protecting the legacy',
+    description: 'An archival appeal dated 3 August 2010 called for public support to protect the statue.',
   },
   {
     marker: 'Ongoing',
     title: 'Digitisation',
-    description: 'Photographs, recordings and documents are catalogued as they are located.',
+    description: 'Additional records are still being recovered and catalogued as they are located.',
   },
 ];
 ---
@@ -57,7 +72,12 @@ const timelineItems = [
 
   <section class="section" aria-labelledby="archive-timeline-heading">
     <div class="container container--narrow">
-      <SectionHeader as="h2" id="archive-timeline-heading" title="An archive still being assembled." />
+      <SectionHeader
+        as="h2"
+        id="archive-timeline-heading"
+        title="The archive is beginning to speak."
+        lede="Family records are helping reconstruct a cultural journey that extended across decades. What began with Annamacharya Kalabharati in 1984 can now be traced through programmes, community appeals and commemorations into the following decades."
+      />
       <Timeline items={timelineItems} />
       <div class="registration-block">
         <p class="registration-block__name">Annamacharya Kalabharati</p>

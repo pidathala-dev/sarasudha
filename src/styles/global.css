@@ -72,6 +72,11 @@ h4 {
   /* Balances line lengths so headlines don't leave a single short/orphan
      word on the last line. Unsupported browsers just wrap normally. */
   text-wrap: balance;
+  /* Safety net for non-breaking-space-joined phrases (e.g. "Annamacharya
+     Kalabharati") in a long headline at narrow viewports: the NBSP still
+     keeps the phrase together whenever it fits, but this prevents it from
+     forcing horizontal overflow on the rare headline where it doesn't. */
+  overflow-wrap: break-word;
 }
 
 h1 {
