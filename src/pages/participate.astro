@@ -2,40 +2,67 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import CTA from '../components/CTA.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { contact } from '../config/contact';
 
 const paths = [
   {
+    slug: 'perform',
     title: 'Perform',
-    description: 'For artists who would like to perform or collaborate.',
+    eyebrow: 'For musicians & performers',
+    description:
+      "If you perform Carnatic, light or devotional music — or something that doesn't sit neatly in a category — Sarasudha is building its stage from its very first artist onward.",
+    ctaLabel: 'Apply to Perform',
     reason: 'Artist / Performer',
   },
   {
-    title: 'Attend',
-    description: 'Discover performances, conversations and gatherings.',
-    reason: 'Event',
+    slug: 'collaborate',
+    title: 'Collaborate',
+    eyebrow: 'For fellow artists & organisations',
+    description:
+      'Ensembles, cultural groups and individual artists working on something aligned with what Sarasudha is building — let’s explore what we could create together.',
+    ctaLabel: 'Propose a Collaboration',
+    reason: 'Collaboration',
   },
   {
-    title: 'Contribute',
-    description: 'Help preserve photographs, recordings, programmes and cultural history.',
+    slug: 'archive',
+    title: 'Archive',
+    eyebrow: 'For families & collectors',
+    description:
+      'If you or your family hold photographs, recordings, programmes or documents connected with Annamacharya Kalabharati or Sarasudha, they matter to this archive — however incomplete it looks today.',
+    ctaLabel: 'Contribute to the Archive',
     reason: 'Archive contribution',
   },
   {
-    title: 'Support',
-    description: 'Volunteer, partner or support future cultural initiatives.',
+    slug: 'volunteer',
+    title: 'Volunteer',
+    eyebrow: 'For hands-on support',
+    description:
+      'Event coordination, archive digitisation, design, writing — a new organisation runs on people willing to give time and skill before there is a large team to do it.',
+    ctaLabel: 'Volunteer With Us',
     reason: 'Volunteer',
   },
-];
+  {
+    slug: 'partner',
+    title: 'Partner',
+    eyebrow: 'For institutions & venues',
+    description:
+      'Sabhas, cultural institutions, sponsors and venues interested in hosting, co-presenting or supporting Sarasudha’s programme are welcome to start a conversation early.',
+    ctaLabel: 'Discuss a Partnership',
+    reason: 'Partnership',
+  },
+] as const;
 ---
 
 <BaseLayout
   title="Participate"
-  description="There is a place for you in the music. Perform. Listen. Contribute. Preserve. Support."
+  description="There is a place for you in the music — as a performer, collaborator, archive contributor, volunteer, partner or someone who just wants to stay close."
   path="/participate"
 >
   <PageHero
     eyebrow="Participate"
     title="There is a place for you in the music."
-    lede="Perform. Listen. Contribute. Preserve. Support."
+    lede="Sarasudha is early — which means the people who join now shape what it becomes. Six ways in, whoever you are."
   />
 
   <section class="section" aria-labelledby="paths-heading">
@@ -44,24 +71,47 @@ const paths = [
       <div class="paths-grid">
         {
           paths.map((path, index) => (
-            <article class="path-card">
+            <article class="path-card" id={path.slug} data-path={path.slug}>
               <p class="path-card__index">{String(index + 1).padStart(2, '0')}</p>
+              <p class="path-card__eyebrow">{path.eyebrow}</p>
               <h3>{path.title}</h3>
               <p class="path-card__description">{path.description}</p>
-              <a href={`/contact?reason=${encodeURIComponent(path.reason)}`} class="path-card__link">
-                Get in touch
+              <a href={`/contact?reason=${encodeURIComponent(path.reason)}&path=${path.slug}`} class="path-card__link">
+                {path.ctaLabel}
                 <span aria-hidden="true">→</span>
               </a>
             </article>
           ))
         }
+
+        <article class="path-card" id="connect" data-path="connect">
+          <p class="path-card__index">06</p>
+          <p class="path-card__eyebrow">For everyone following along</p>
+          <h3>Stay Connected</h3>
+          <p class="path-card__description">
+            There's no newsletter yet, so there's no list to join and nothing that pretends to send you
+            updates it can't. Reach us directly instead, and follow along wherever we're already active.
+          </p>
+          {contact.email && (
+            <p class="path-card__email">
+              <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            </p>
+          )}
+          <div class="path-card__social">
+            <SocialLinks />
+          </div>
+          <a href="/contact" class="path-card__link">
+            Say Hello
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
       </div>
     </div>
   </section>
 
   <CTA
     title="The next note is waiting."
-    lede="Join Sarasudha as we create a new space for music across generations."
+    lede="Join Sarasudha as we build a new space for music, one real contribution at a time."
     primaryLabel="Contact Us"
     primaryHref="/contact"
     secondaryLabel="Explore the Music"
@@ -81,6 +131,15 @@ const paths = [
     border: var(--border-hairline);
     border-radius: var(--radius-md);
     background: var(--color-warm-white);
+    scroll-margin-top: 100px;
+    transition: border-color var(--duration-standard) var(--ease-standard),
+      box-shadow var(--duration-standard) var(--ease-standard);
+  }
+
+  .path-card:target,
+  .path-card.is-selected {
+    border-color: var(--color-gold-antique);
+    box-shadow: var(--shadow-gold);
   }
 
   .path-card__index {
@@ -90,12 +149,34 @@ const paths = [
     margin-bottom: var(--space-3);
   }
 
+  .path-card__eyebrow {
+    font-size: var(--fs-100);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
+    margin-bottom: var(--space-2);
+  }
+
   .path-card h3 {
     margin-bottom: var(--space-2);
   }
 
   .path-card__description {
     color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .path-card__email {
+    margin-bottom: var(--space-3);
+    font-weight: 600;
+  }
+
+  .path-card__email a {
+    color: var(--color-maroon);
+  }
+
+  .path-card__social {
     margin-bottom: var(--space-4);
   }
 
@@ -116,7 +197,19 @@ const paths = [
 
   @media (min-width: 1024px) {
     .paths-grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const requestedPath = params.get('path');
+  if (requestedPath) {
+    const card = document.querySelector<HTMLElement>(`[data-path="${CSS.escape(requestedPath)}"]`);
+    if (card) {
+      card.classList.add('is-selected');
+      card.scrollIntoView({ block: 'start' });
+    }
+  }
+</script>

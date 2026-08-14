@@ -94,8 +94,10 @@ const timelineItems = [
             </div>
           ) : (
             <EmptyState
-              title="This section is being assembled."
+              title="Nothing catalogued here yet."
               description="Material connected to Annamacharya Kalabharati will appear here as it is located and digitised."
+              ctaLabel="Have Something to Share?"
+              ctaHref="/participate?path=archive"
             />
           )
         }
@@ -122,6 +124,8 @@ const timelineItems = [
             <EmptyState
               title="This section will grow from here."
               description="Sarasudha's own performances, conversations and programmes will be archived as they happen."
+              ctaLabel="Contribute to the Archive"
+              ctaHref="/participate?path=archive"
             />
           )
         }
@@ -133,10 +137,10 @@ const timelineItems = [
     eyebrow="Contribute"
     title="Contribute to the Archive"
     lede="If you have photographs, recordings, programmes or memories connected with Annamacharya Kalabharati or Sarasudha, we would be glad to hear from you."
-    primaryLabel="Get in Touch"
-    primaryHref="/participate"
+    primaryLabel="Contribute to the Archive"
+    primaryHref="/participate?path=archive"
     secondaryLabel="Contact Us"
-    secondaryHref="/contact"
+    secondaryHref="/contact?reason=Archive%20contribution"
   />
 </BaseLayout>
 

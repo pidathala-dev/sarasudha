@@ -5,7 +5,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import MusicCard from '../components/MusicCard.astro';
 import ArtistCard from '../components/ArtistCard.astro';
 import EventCard from '../components/EventCard.astro';
-import EmptyState from '../components/EmptyState.astro';
+import LaunchState from '../components/LaunchState.astro';
 import { showDemoContent } from '../config/site';
 
 const performances = await getCollection('performances', (entry) => showDemoContent || !entry.data.isDemoContent);
@@ -46,11 +46,11 @@ const understandingTopics = [
     </div>
   </section>
 
-  {
-    carnaticPerformances.length > 0 && (
-      <section class="section ragam-section" aria-labelledby="featured-heading">
-        <div class="container">
-          <SectionHeader as="h2" id="featured-heading" eyebrow="Featured Performances" title="Recent from the Ragam stage." gold />
+  <section class="section ragam-section" aria-labelledby="featured-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="featured-heading" eyebrow="Featured Performances" title="Recent from the Ragam stage." gold />
+      {
+        carnaticPerformances.length > 0 ? (
           <div class="card-grid">
             {carnaticPerformances.slice(0, 3).map((performance) => (
               <MusicCard
@@ -66,10 +66,17 @@ const understandingTopics = [
               />
             ))}
           </div>
-        </div>
-      </section>
-    )
-  }
+        ) : (
+          <LaunchState
+            title="The Ragam stage is still empty."
+            description="No Carnatic performances have been featured yet. This is where the first one will appear."
+            primaryLabel="Perform With Us"
+            primaryHref="/participate?path=perform"
+          />
+        )
+      }
+    </div>
+  </section>
 
   <section class="section section--alt ragam-section" aria-labelledby="composers-heading">
     <div class="container">
@@ -81,9 +88,11 @@ const understandingTopics = [
         lede="A growing index of composers and the compositions that continue to shape Carnatic performance."
         gold
       />
-      <EmptyState
-        title="This index is being built."
-        description="Composer and composition profiles will appear here as the archive grows."
+      <LaunchState
+        title="This index is still to be written."
+        description="Composer and composition profiles will appear here once the archive holds real material to describe."
+        primaryLabel="Contribute to the Archive"
+        primaryHref="/participate?path=archive"
       />
     </div>
   </section>
@@ -181,11 +190,11 @@ const understandingTopics = [
             ))}
           </div>
         ) : (
-          <EmptyState
-            title="New Ragam gatherings are being composed."
-            description="Join our community to hear first."
-            ctaLabel="Join the Community"
-            ctaHref="/participate"
+          <LaunchState
+            title="No Ragam gatherings are on the calendar yet."
+            description="As soon as a Carnatic performance or lecture demonstration is confirmed, it will appear here."
+            primaryLabel="Stay Connected"
+            primaryHref="/participate?path=connect"
           />
         )
       }

@@ -2,13 +2,23 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
 import MediaEmbed from '../components/MediaEmbed.astro';
+import LaunchState from '../components/LaunchState.astro';
 import { musicTags } from '../content.config';
 import { showDemoContent } from '../config/site';
 
 const performances = (await getCollection('performances', (entry) => showDemoContent || !entry.data.isDemoContent)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
+const hasPerformances = performances.length > 0;
+
+const categories = [
+  { title: 'Carnatic', description: 'Kritis, varnams and ragam-tanam-pallavi from vocalists and instrumentalists working within the classical tradition.' },
+  { title: 'Light', description: 'Telugu light music and melody built for wide, immediate resonance across generations.' },
+  { title: 'Devotional', description: 'Bhajans and devotional compositions performed with feeling as much as technique.' },
+  { title: 'New Expressions', description: 'Contemporary arrangements, fusion and collaborations that respect tradition without being bound by it.' },
+];
 ---
 
 <BaseLayout
@@ -22,30 +32,24 @@ const performances = (await getCollection('performances', (entry) => showDemoCon
     lede="Music does not stop at the boundaries we give it. Sarasudha brings classical depth, familiar melodies and new interpretations into one cultural conversation."
   />
 
-  <section class="section" aria-labelledby="filter-heading">
-    <div class="container">
-      <h2 id="filter-heading" class="visually-hidden">Filter performances by tag</h2>
-      <div class="filters" role="group" aria-label="Filter performances by tag" data-filters>
-        <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
-        {
-          musicTags.map((tag) => (
-            <button type="button" class="filter-chip" data-filter={tag} aria-pressed="false">
-              {tag}
-            </button>
-          ))
-        }
-      </div>
-      <p class="filters__status" data-filter-status role="status">Showing all {performances.length} performances.</p>
+  {
+    hasPerformances ? (
+      <section class="section" aria-labelledby="filter-heading">
+        <div class="container">
+          <h2 id="filter-heading" class="visually-hidden">Filter performances by tag</h2>
+          <div class="filters" role="group" aria-label="Filter performances by tag" data-filters>
+            <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
+            {musicTags.map((tag) => (
+              <button type="button" class="filter-chip" data-filter={tag} aria-pressed="false">
+                {tag}
+              </button>
+            ))}
+          </div>
+          <p class="filters__status" data-filter-status role="status">Showing all {performances.length} performances.</p>
 
-      {
-        performances.length > 0 ? (
           <div class="performance-list" data-performance-list>
             {performances.map((performance) => (
-              <article
-                id={performance.id}
-                class="performance-entry"
-                data-tags={performance.data.genre.join(',')}
-              >
+              <article id={performance.id} class="performance-entry" data-tags={performance.data.genre.join(',')}>
                 <div class="performance-entry__media">
                   <MediaEmbed
                     youtubeUrl={performance.data.youtubeUrl}
@@ -71,12 +75,43 @@ const performances = (await getCollection('performances', (entry) => showDemoCon
               </article>
             ))}
           </div>
-        ) : (
-          <p class="filters__status">Performances are being added. Check back soon.</p>
-        )
-      }
-    </div>
-  </section>
+        </div>
+      </section>
+    ) : (
+      <>
+        <section class="section" aria-labelledby="no-performances-heading">
+          <div class="container">
+            <LaunchState
+              eyebrow="Featured Performances"
+              title="The first performance hasn't been recorded yet."
+              description="This page will hold real performances — video, audio and the stories behind them — as soon as they exist. Nothing here is a stand-in for content that doesn't."
+              primaryLabel="Perform With Us"
+              primaryHref="/participate?path=perform"
+            />
+          </div>
+        </section>
+
+        <section class="section section--alt" aria-labelledby="categories-heading">
+          <div class="container">
+            <SectionHeader
+              as="h2"
+              id="categories-heading"
+              eyebrow="What to Expect"
+              title="Four expressions of one tradition."
+            />
+            <div class="category-grid">
+              {categories.map((category) => (
+                <article class="category-card">
+                  <h3>{category.title}</h3>
+                  <p>{category.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -159,10 +194,42 @@ const performances = (await getCollection('performances', (entry) => showDemoCon
     color: var(--color-gold-text);
   }
 
+  .category-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .category-card {
+    padding: var(--space-5);
+    border-top: 2px solid var(--color-gold-antique);
+  }
+
+  .category-card h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .category-card p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-200);
+  }
+
+  @media (min-width: 640px) {
+    .category-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (min-width: 800px) {
     .performance-entry {
       grid-template-columns: 1.1fr 1fr;
       align-items: center;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .category-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

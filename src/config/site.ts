@@ -39,11 +39,12 @@ export const footerLinks = [
 
 /**
  * Controls whether sample/demo records are rendered across the site.
- * Backed by PUBLIC_SHOW_DEMO_CONTENT — defaults to true so the Phase 1
- * build ships with representative content out of the box. Set to
- * "false" in the production environment once real content exists.
+ * Backed by PUBLIC_SHOW_DEMO_CONTENT — defaults to false so a plain
+ * production build never ships placeholder artists, performances, events
+ * or archive entries. Set explicitly to "true" for local development or
+ * an internal preview when you want to see the site with sample content.
  */
-export const showDemoContent = import.meta.env.PUBLIC_SHOW_DEMO_CONTENT !== 'false';
+export const showDemoContent = import.meta.env.PUBLIC_SHOW_DEMO_CONTENT === 'true';
 
 export const brandArchitecture = {
   master: 'Sarasudha',

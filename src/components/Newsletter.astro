@@ -10,8 +10,8 @@ interface Props {
 }
 
 const {
-  title = 'The next note is waiting.',
-  description = 'Join Sarasudha as we create a new space for music across generations.',
+  title = 'Stay close to Sarasudha.',
+  description = "There's no newsletter yet — but you can reach us directly, and we'll make sure you hear when there's something to hear.",
 } = Astro.props;
 ---
 
@@ -19,7 +19,7 @@ const {
   <div class="container newsletter__inner">
     <h2 class="newsletter__title">{title}</h2>
     <p class="newsletter__description">{description}</p>
-    <a href="/participate" class="btn btn-gold">Join the Community</a>
+    <a href="/participate?path=connect" class="btn btn-gold">Stay Connected</a>
   </div>
 </section>
 
