@@ -1,0 +1,229 @@
+---
+import Logo from './Logo.astro';
+import MobileNav from './MobileNav.astro';
+import { navigation } from '../config/site';
+
+const currentPath = new URL(Astro.request.url).pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a href="/" class="site-header__brand" aria-label="Sarasudha, home">
+      <Logo variant="primary" />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Primary">
+      <ul>
+        {
+          navigation.map((item) => (
+            <li>
+              <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a href="/contact" class="btn btn-primary site-header__contact">Contact</a>
+      <button
+        type="button"
+        class="site-header__toggle"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="visually-hidden">Open menu</span>
+        <span class="site-header__toggle-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{/* Rendered as a sibling, not a descendant, of .site-header: that element's
+    backdrop-filter creates a new containing block for fixed-position
+    descendants, which would collapse this panel's height to zero. */}
+<MobileNav currentPath={currentPath} />
+
+<style>
+  .site-header {
+    --header-height: 68px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-warm-white) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: var(--border-hairline);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+  }
+
+  .site-header__brand {
+    text-decoration: none;
+    display: inline-flex;
+  }
+
+  .site-header__nav {
+    display: none;
+  }
+
+  .site-header__nav ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .site-header__nav a {
+    text-decoration: none;
+    font-size: var(--fs-200);
+    font-weight: 500;
+    color: var(--color-text);
+    padding-block: var(--space-2);
+    border-bottom: 2px solid transparent;
+    transition: border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-header__nav a:hover {
+    color: var(--color-maroon);
+  }
+
+  .site-header__nav a[aria-current='page'] {
+    color: var(--color-maroon);
+    border-bottom-color: var(--color-gold-antique);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .site-header__contact {
+    display: none;
+    min-height: 40px;
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--fs-100);
+  }
+
+  .site-header__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    border: var(--border-hairline);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .site-header__toggle-icon,
+  .site-header__toggle-icon::before,
+  .site-header__toggle-icon::after {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-ink);
+    border-radius: 2px;
+    transition: transform var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-header__toggle-icon {
+    position: relative;
+  }
+
+  .site-header__toggle-icon::before,
+  .site-header__toggle-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .site-header__toggle-icon::before {
+    top: -6px;
+  }
+
+  .site-header__toggle-icon::after {
+    top: 6px;
+  }
+
+  .site-header__toggle[aria-expanded='true'] .site-header__toggle-icon {
+    background: transparent;
+  }
+
+  .site-header__toggle[aria-expanded='true'] .site-header__toggle-icon::before {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .site-header__toggle[aria-expanded='true'] .site-header__toggle-icon::after {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  @media (min-width: 900px) {
+    .site-header__nav {
+      display: block;
+    }
+
+    .site-header__contact {
+      display: inline-flex;
+    }
+
+    .site-header__toggle {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const toggle = header?.querySelector('[data-nav-toggle]') as HTMLButtonElement | null;
+  const panel = document.getElementById('mobile-nav');
+
+  if (toggle && panel) {
+    const close = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+      document.body.style.overflow = '';
+    };
+
+    const open = () => {
+      toggle.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+      document.body.style.overflow = 'hidden';
+      const firstLink = panel.querySelector('a');
+      (firstLink as HTMLAnchorElement | null)?.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        close();
+      } else {
+        open();
+      }
+    });
+
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).tagName === 'A') close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        close();
+        toggle.focus();
+      }
+    });
+
+    const mediaQuery = window.matchMedia('(min-width: 900px)');
+    mediaQuery.addEventListener('change', (event) => {
+      if (event.matches) close();
+    });
+  }
+</script>

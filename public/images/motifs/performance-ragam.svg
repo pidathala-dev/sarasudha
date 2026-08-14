@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="grad-performance-ragam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D101B" />
+      <stop offset="100%" stop-color="#4A1528" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#grad-performance-ragam)" />
+  <path d="M 60 460 C 220 480, 300 320, 260 200 C 230 100, 340 40, 480 60" fill="none" stroke="#D7B36A" stroke-width="6" opacity="0.5" stroke-linecap="round"/><line x1="520" y1="70" x2="900" y2="470" stroke="#D7B36A" stroke-width="1.2" opacity="0.28" /><line x1="610" y1="70" x2="886" y2="462" stroke="#D7B36A" stroke-width="1.2" opacity="0.36000000000000004" /><line x1="700" y1="70" x2="872" y2="454" stroke="#D7B36A" stroke-width="1.2" opacity="0.44000000000000006" /><line x1="790" y1="70" x2="858" y2="446" stroke="#D7B36A" stroke-width="1.2" opacity="0.52" /><circle cx="480" cy="60" r="4" fill="#D7B36A" opacity="0.6" /><circle cx="484" cy="62" r="4" fill="#D7B36A" opacity="0.6" /><circle cx="488" cy="64" r="4" fill="#D7B36A" opacity="0.6" /><circle cx="492" cy="66" r="4" fill="#D7B36A" opacity="0.6" /><circle cx="496" cy="68" r="4" fill="#D7B36A" opacity="0.6" />
+</svg>

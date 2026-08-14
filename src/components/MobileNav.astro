@@ -1,0 +1,95 @@
+---
+import { navigation } from '../config/site';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<div id="mobile-nav" class="mobile-nav" hidden>
+  <nav aria-label="Mobile">
+    <ul class="mobile-nav__list">
+      {
+        navigation.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="mobile-nav__link"
+              aria-current={currentPath === item.href ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href="/contact" class="mobile-nav__link mobile-nav__link--cta">Contact</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    top: var(--header-height, 68px);
+    z-index: 60;
+    background: var(--color-warm-white);
+    overflow-y: auto;
+    animation: mobile-nav-in var(--duration-standard) var(--ease-standard);
+  }
+
+  @keyframes mobile-nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-nav__list {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-5);
+    gap: var(--space-1);
+  }
+
+  .mobile-nav__link {
+    display: block;
+    padding: var(--space-4) var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--fs-500);
+    text-decoration: none;
+    color: var(--color-text);
+    border-bottom: var(--border-hairline);
+    min-height: 48px;
+  }
+
+  .mobile-nav__link[aria-current='page'] {
+    color: var(--color-maroon);
+  }
+
+  .mobile-nav__link--cta {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--fs-300);
+    font-weight: 600;
+    color: var(--color-warm-white);
+    background: var(--color-maroon);
+    border-radius: 999px;
+    text-align: center;
+    border-bottom: none;
+  }
+
+  @media (min-width: 900px) {
+    .mobile-nav {
+      display: none;
+    }
+  }
+</style>

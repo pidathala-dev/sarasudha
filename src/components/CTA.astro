@@ -1,0 +1,53 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const { eyebrow, title, lede, primaryLabel, primaryHref, secondaryLabel, secondaryHref } = Astro.props;
+---
+
+<section class="cta section section--inverse">
+  <div class="container cta__inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2 class="cta__title">{title}</h2>
+    {lede && <p class="cta__lede">{lede}</p>}
+    <div class="cta__actions">
+      <a href={primaryHref} class="btn btn-gold">{primaryLabel}</a>
+      {secondaryLabel && secondaryHref && (
+        <a href={secondaryHref} class="btn btn-secondary">{secondaryLabel}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__inner {
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .cta__title {
+    color: var(--color-text-inverse);
+  }
+
+  .cta__lede {
+    color: var(--color-text-inverse-muted);
+    font-size: var(--fs-400);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+</style>

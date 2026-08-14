@@ -1,0 +1,70 @@
+---
+import { contact } from '../config/contact';
+
+interface Props {
+  class?: string;
+  inverse?: boolean;
+}
+
+const { class: className = '', inverse = false } = Astro.props;
+
+const links = [
+  { key: 'instagram', label: 'Instagram', href: contact.instagram },
+  { key: 'youtube', label: 'YouTube', href: contact.youtube },
+  { key: 'facebook', label: 'Facebook', href: contact.facebook },
+  { key: 'whatsapp', label: 'WhatsApp', href: contact.whatsapp },
+].filter((link) => link.href) as { key: string; label: string; href: string }[];
+---
+
+{
+  links.length > 0 ? (
+    <ul class={`social-links ${inverse ? 'social-links--inverse' : ''} ${className}`}>
+      {links.map((link) => (
+        <li>
+          <a href={link.href} rel="noopener noreferrer" target="_blank">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class={`social-links__empty ${inverse ? 'social-links__empty--inverse' : ''} ${className}`}>
+      Social channels coming soon.
+    </p>
+  )
+}
+
+<style>
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+  }
+
+  .social-links a {
+    text-decoration: none;
+    font-size: var(--fs-200);
+    font-weight: 500;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2px;
+  }
+
+  .social-links a:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .social-links--inverse a {
+    color: var(--color-text-inverse);
+    border-bottom-color: var(--color-border-inverse);
+  }
+
+  .social-links__empty {
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+
+  .social-links__empty--inverse {
+    color: var(--color-text-inverse-muted);
+  }
+</style>

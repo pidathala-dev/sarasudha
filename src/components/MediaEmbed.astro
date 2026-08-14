@@ -1,0 +1,89 @@
+---
+/**
+ * Responsive 16:9 media container. Renders a facade thumbnail that swaps
+ * to a YouTube iframe only on user interaction (click-to-load), so no
+ * third-party requests happen until the visitor asks for them. No
+ * autoplay, ever. Falls back to a static thumbnail if no media is set.
+ */
+interface Props {
+  youtubeUrl?: string;
+  thumbnail: string;
+  thumbnailAlt: string;
+  title: string;
+}
+
+const { youtubeUrl, thumbnail, thumbnailAlt } = Astro.props;
+
+function extractYouTubeId(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes('youtu.be')) return parsed.pathname.slice(1);
+    if (parsed.searchParams.has('v')) return parsed.searchParams.get('v');
+    const match = parsed.pathname.match(/\/embed\/([^/?]+)/);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
+const videoId = youtubeUrl ? extractYouTubeId(youtubeUrl) : null;
+---
+
+<div class="media-embed media-frame" data-media-embed data-video-id={videoId ?? undefined}>
+  <img src={thumbnail} alt={thumbnailAlt} loading="lazy" />
+  {
+    videoId && (
+      <button type="button" class="media-embed__play" data-media-play aria-label="Play video (opens embedded YouTube player)">
+        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+          <path d="M8 5v14l11-7z" fill="currentColor" />
+        </svg>
+      </button>
+    )
+  }
+</div>
+
+<style>
+  .media-embed {
+    position: relative;
+  }
+
+  .media-embed__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-warm-white) 92%, transparent);
+    color: var(--color-maroon);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .media-embed__play:hover {
+    transform: scale(1.06);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-media-embed]').forEach((container) => {
+    const button = container.querySelector<HTMLButtonElement>('[data-media-play]');
+    const videoId = container.dataset.videoId;
+    if (!button || !videoId) return;
+
+    button.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+      iframe.title = 'YouTube video player';
+      iframe.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      container.innerHTML = '';
+      container.appendChild(iframe);
+    });
+  });
+</script>

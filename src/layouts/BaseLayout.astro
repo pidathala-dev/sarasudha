@@ -1,0 +1,65 @@
+---
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { buildSeo, organizationSchema, type SeoProps } from '../lib/seo';
+import { site } from '../config/site';
+import '../styles/global.css';
+
+interface Props extends SeoProps {
+  bodyClass?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { bodyClass, structuredData, ...seoProps } = Astro.props;
+const seo = buildSeo(seoProps);
+
+const publicDir = fileURLToPath(new URL('../../public/brand/', import.meta.url));
+const hasSocialCard = existsSync(publicDir + 'social-card.png');
+const ogImage = hasSocialCard ? new URL('/brand/social-card.png', site.url).toString() : undefined;
+
+const schemas = [
+  organizationSchema(),
+  ...(structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : []),
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+    <link rel="canonical" href={seo.canonical} />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    {seo.noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content={seo.type} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:site_name" content={site.name} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={seo.title} />
+    <meta name="twitter:description" content={seo.description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+    ))}
+
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

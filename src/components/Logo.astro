@@ -1,0 +1,100 @@
+---
+/**
+ * Sarasudha wordmark. Looks for an official SVG asset in /public/brand/
+ * first; falls back to a typographic mark if none has been supplied yet.
+ * Drop real files into public/brand/ (see README "Replacing logos") and
+ * this component picks them up automatically — no layout changes needed.
+ */
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+interface Props {
+  variant?: 'primary' | 'light' | 'ragam';
+  class?: string;
+}
+
+const { variant = 'primary', class: className = '' } = Astro.props;
+
+const assetMap: Record<string, string> = {
+  primary: 'primary-logo.svg',
+  light: 'logo-light.svg',
+  ragam: 'ragam-logo.svg',
+};
+
+const assetFile = assetMap[variant];
+const publicDir = fileURLToPath(new URL('../../public/brand/', import.meta.url));
+const hasAsset = existsSync(publicDir + assetFile);
+const assetSrc = `/brand/${assetFile}`;
+---
+
+{
+  hasAsset ? (
+    <img src={assetSrc} alt="Sarasudha" class={`logo logo--asset ${className}`} />
+  ) : variant === 'ragam' ? (
+    <span class={`logo logo--fallback logo--ragam ${className}`}>
+      <span class="logo__eyebrow">Sarasudha</span>
+      <span class="logo__ragam-word">Ragam</span>
+    </span>
+  ) : (
+    <span class={`logo logo--fallback ${variant === 'light' ? 'logo--light' : ''} ${className}`}>
+      <span class="logo__sara">Sara</span><span class="logo__sudha">sudha</span>
+    </span>
+  )
+}
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--fs-400);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .logo--asset {
+    height: 2rem;
+    width: auto;
+    display: block;
+  }
+
+  .logo__sara {
+    color: var(--color-maroon);
+  }
+
+  .logo__sudha {
+    color: var(--color-gold-text);
+  }
+
+  .logo--light .logo__sara {
+    color: var(--color-warm-white);
+  }
+
+  .logo--light .logo__sudha {
+    color: var(--color-gold-warm);
+  }
+
+  .logo--ragam {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    line-height: 1.1;
+  }
+
+  .logo__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .logo__ragam-word {
+    font-size: var(--fs-500);
+    color: var(--color-gold-text);
+    font-style: italic;
+  }
+</style>
