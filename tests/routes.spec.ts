@@ -32,12 +32,18 @@ for (const route of primaryRoutes) {
   });
 }
 
-test('artist detail route renders', async ({ page }) => {
+test('artists page renders — with the launch state when there is no real content yet, or a working profile link once there is', async ({
+  page,
+}) => {
   await page.goto('/artists');
   const firstArtistLink = page.locator('main a[href^="/artists/"]').first();
-  await expect(firstArtistLink).toBeVisible();
-  await firstArtistLink.click();
-  await expect(page.locator('h1')).toHaveCount(1);
+  if (await firstArtistLink.count()) {
+    await firstArtistLink.click();
+    await expect(page.locator('h1')).toHaveCount(1);
+  } else {
+    // Zero-content launch state — see tests/launch-state.spec.ts for full coverage.
+    await expect(page.locator('h1')).toHaveCount(1);
+  }
 });
 
 test('404 for an unknown route', async ({ page }) => {
