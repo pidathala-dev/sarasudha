@@ -46,7 +46,6 @@ to Sarasudha. Prefer concrete, restrained language over superlatives.
   section.
 - **Headlines are short.** Aim for one line at desktop width. If a headline needs three clauses to
   make its point, it's doing too much — split it into a headline plus a lede sentence instead.
-  the same idea again.
 - **One core message per section.** Music Unbound = breadth. Ragam = classical depth. Heritage =
   where this comes from. Don't blend them.
 
@@ -58,28 +57,59 @@ and cross-linking work: `Carnatic`, `Light`, `Devotional`, `Vocal`, `Instrumenta
 
 ## Claims that need care
 
-### Annamacharya Kalabharati / 1984
+### Annamacharya Kalabharati / 1984 / Registration No. 217/1984
+
+The owner has supplied the registration number **217/1984** for Annamacharya Kalabharati, Cuddapah.
+This may now be published — e.g. "Annamacharya Kalabharati, Cuddapah · Regn. No. 217/1984" — but its
+presence on the site is a statement of what was *registered in 1984*, not a statement about the
+society's status today.
 
 **Allowed:**
+- "Annamacharya Kalabharati, Cuddapah · Regn. No. 217/1984"
+- "The organisation was registered in 1984 under Registration No. 217/1984."
 - "Rooted in a cultural journey that began with Annamacharya Kalabharati in Cuddapah in 1984."
-- "The story traces its roots to Annamacharya Kalabharati, established in Cuddapah in 1984."
+- "A new chapter inspired by and carrying forward that cultural journey."
+- P. Ramachandran, the owner's father, was associated with the original organisation and is named as
+  "among its early leaders" (no specific title).
 
 **Not allowed until verified** (see `docs/HERITAGE_VERIFICATION.md`):
-- "Registered society since 1984"
-- "42-year-old registered institution"
+- Any claim that the 1984 society is presently active, or that its registration remains current
+- Any claim that Sarasudha is legally the same society — avoid "the same organisation," "the same
+  cultural institution," or "continuation"; use "inspired by," "rooted in," "carries forward the
+  spirit of," or "a new chapter in" instead
+- "Registered society since 1984" (present tense) or "42-year-old registered institution"
 - Any statement of current NGO registration, tax status, charitable status, or government
   recognition
-- A specific formal title for P. Ramachandran (write "among its early leaders" or similar, not a
-  specific designation)
+- A specific formal title for P. Ramachandran (Founder, President, Secretary, etc.) — write "among
+  its early leaders" or similar, never a specific designation
 
 If you're not sure whether a historical statement is safe to publish, treat it as unverified and
 check `docs/HERITAGE_VERIFICATION.md` first.
 
-### Sarasudha's own name
+### Sarala, Sudha and the Sarasudha name
 
-The Sarala + Sudha origin story is personal and true, and can be told directly (see `/our-story`).
-Keep it restrained — it's the origin story of a public cultural platform, not a memorial. Don't
-extend the family narrative into sections that aren't specifically about the platform's origin.
+- **Sarala** (the owner's mother) and **Sudha** (the owner's sister) are separate personal names when
+  explaining the etymology — never merge them into a single name or attribute them to the same
+  person.
+- Interpret **Sarala** as simplicity, sincerity and grace; interpret **Sudha** as nectar, sweetness
+  and richness. Don't over-literalise the Sanskrit/dictionary definitions — see
+  `docs/BRAND_GUIDE.md` → "Name origin" for the approved conceptual framing.
+- The combination is bigger than the two names: frame Sarasudha as what those two ideas become when
+  expressed through music, not as a family tribute.
+- The origin story is personal and true, and can be told directly (see `/our-story`). Keep it
+  restrained — it's the origin of a public cultural platform, not a memorial.
+- Don't over-use the family story. It belongs prominently on `/our-story`; reference it selectively
+  elsewhere (if at all) and never repeat it in footers, performance listings, artist pages, or every
+  CTA. The platform must read as bigger than its origin: origin story → identity → universal music
+  platform.
+
+### The brand name itself
+
+Always write **Sarasudha** as one word. Never "Sara Sudha," "SaraSudha," or "Sarala Sudha" as the
+brand name (Sarala and Sudha are the two source names, not the brand name). The classical vertical is
+**Sarasudha Ragam** — always as a sub-brand of Sarasudha, never shortened to just "Ragam" as a
+standalone brand identity in first reference on a page (later references on the same page may say
+"Ragam" for brevity once established).
 
 ### Demo/placeholder content
 
