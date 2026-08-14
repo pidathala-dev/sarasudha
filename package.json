@@ -15,7 +15,9 @@
     "pretest": "npm run build",
     "test": "playwright test",
     "test:install": "playwright install --with-deps chromium",
-    "test:serve": "serve dist -l 4321"
+    "test:serve": "serve dist -l 4321",
+    "test:demo": "PUBLIC_SHOW_DEMO_CONTENT=true npm run build:unchecked && playwright test --config=playwright.demo.config.ts",
+    "launch:check": "npm run build && node scripts/launch-check.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
