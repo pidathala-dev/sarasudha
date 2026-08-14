@@ -1,6 +1,7 @@
 ---
 title: "Founding documents"
 category: "Documents"
+era: "historical"
 description: "Correspondence, registers and other documents connected to the organisation's history. Archive material being digitised."
 image: "/images/archive/programme.svg"
 imageAlt: "Abstract cream and maroon ribbon motif"

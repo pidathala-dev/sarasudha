@@ -5,10 +5,13 @@ import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ArchiveCard from '../components/ArchiveCard.astro';
 import Timeline from '../components/Timeline.astro';
+import EmptyState from '../components/EmptyState.astro';
 import CTA from '../components/CTA.astro';
 import { showDemoContent } from '../config/site';
 
 const archiveItems = await getCollection('archive', (entry) => showDemoContent || !entry.data.isDemoContent);
+const historicalItems = archiveItems.filter((item) => item.data.era === 'historical');
+const contemporaryItems = archiveItems.filter((item) => item.data.era === 'contemporary');
 
 const categories = [
   'People',
@@ -21,15 +24,28 @@ const categories = [
 ] as const;
 
 const timelineItems = [
-  { marker: '1984', title: 'Cuddapah', description: 'Annamacharya Kalabharati begins its cultural journey.' },
-  { marker: '2026', title: 'Sarasudha', description: 'The archive finds a new, digital home.' },
-  { marker: 'Ongoing', title: 'Digitisation', description: 'Photographs, recordings and documents are catalogued as they are located.' },
+  {
+    marker: '1984',
+    title: 'Annamacharya Kalabharati',
+    subtitle: 'Cuddapah · Regn. No. 217/1984',
+    description: 'A cultural initiative bringing music, artists and community together.',
+  },
+  {
+    marker: '2026',
+    title: 'Sarasudha',
+    description: 'A new chapter — the archive finds a digital home, inspired by that cultural journey.',
+  },
+  {
+    marker: 'Ongoing',
+    title: 'Digitisation',
+    description: 'Photographs, recordings and documents are catalogued as they are located.',
+  },
 ];
 ---
 
 <BaseLayout
   title="Heritage"
-  description="Keeping memory audible — the Sarasudha archive of people, performances, photographs, programmes, recordings and documents connected to Annamacharya Kalabharati."
+  description="Keeping memory audible — the Sarasudha archive, tracing back to Annamacharya Kalabharati, Cuddapah, Regn. No. 217/1984."
   path="/heritage"
 >
   <PageHero
@@ -43,6 +59,10 @@ const timelineItems = [
     <div class="container container--narrow">
       <SectionHeader as="h2" id="archive-timeline-heading" title="An archive still being assembled." />
       <Timeline items={timelineItems} />
+      <div class="registration-block">
+        <p class="registration-block__name">Annamacharya Kalabharati</p>
+        <p class="registration-block__meta">Cuddapah · Regn. No. 217/1984</p>
+      </div>
     </div>
   </section>
 
@@ -55,18 +75,56 @@ const timelineItems = [
         ))}
       </div>
 
-      <div class="archive-grid">
-        {archiveItems.map((item) => (
-          <ArchiveCard
-            title={item.data.title}
-            category={item.data.category}
-            year={item.data.year}
-            description={item.data.description}
-            image={item.data.image}
-            imageAlt={item.data.imageAlt}
-            pendingDigitisation={item.data.pendingDigitisation}
-          />
-        ))}
+      <div class="archive-group">
+        <p class="archive-group__label">Historical Archive — Annamacharya Kalabharati</p>
+        {
+          historicalItems.length > 0 ? (
+            <div class="archive-grid">
+              {historicalItems.map((item) => (
+                <ArchiveCard
+                  title={item.data.title}
+                  category={item.data.category}
+                  year={item.data.year}
+                  description={item.data.description}
+                  image={item.data.image}
+                  imageAlt={item.data.imageAlt}
+                  pendingDigitisation={item.data.pendingDigitisation}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              title="This section is being assembled."
+              description="Material connected to Annamacharya Kalabharati will appear here as it is located and digitised."
+            />
+          )
+        }
+      </div>
+
+      <div class="archive-group">
+        <p class="archive-group__label">Contemporary Archive — Sarasudha</p>
+        {
+          contemporaryItems.length > 0 ? (
+            <div class="archive-grid">
+              {contemporaryItems.map((item) => (
+                <ArchiveCard
+                  title={item.data.title}
+                  category={item.data.category}
+                  year={item.data.year}
+                  description={item.data.description}
+                  image={item.data.image}
+                  imageAlt={item.data.imageAlt}
+                  pendingDigitisation={item.data.pendingDigitisation}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              title="This section will grow from here."
+              description="Sarasudha's own performances, conversations and programmes will be archived as they happen."
+            />
+          )
+        }
       </div>
     </div>
   </section>
@@ -83,6 +141,28 @@ const timelineItems = [
 </BaseLayout>
 
 <style>
+  .registration-block {
+    margin-top: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-top: 2px solid var(--color-gold-antique);
+    max-width: 28rem;
+  }
+
+  .registration-block__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-400);
+    color: var(--color-maroon);
+  }
+
+  .registration-block__meta {
+    margin-top: var(--space-1);
+    font-size: var(--fs-200);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
+  }
+
   .category-grid {
     display: flex;
     flex-wrap: wrap;
@@ -97,6 +177,25 @@ const timelineItems = [
     font-size: var(--fs-100);
     font-weight: 600;
     color: var(--color-text-muted);
+  }
+
+  .archive-group {
+    margin-bottom: var(--space-8);
+  }
+
+  .archive-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .archive-group__label {
+    font-size: var(--fs-100);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-maroon);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border-hairline);
   }
 
   .archive-grid {

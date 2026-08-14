@@ -10,7 +10,7 @@ test.describe('Desktop navigation', () => {
 
     await nav.getByRole('link', { name: 'Our Story' }).click();
     await expect(page).toHaveURL(/\/our-story/);
-    await expect(page.locator('h1')).toContainText(/chosen/i);
+    await expect(page.locator('h1')).toContainText(/family/i);
   });
 
   test('contact CTA is visible in the header', async ({ page }) => {

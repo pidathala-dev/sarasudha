@@ -2,6 +2,8 @@
 interface TimelineItem {
   marker: string;
   title: string;
+  /** Optional secondary line under the title, e.g. a location or registration reference. */
+  subtitle?: string;
   description: string;
 }
 
@@ -19,6 +21,7 @@ const { items } = Astro.props;
         <div class="timeline__marker">{item.marker}</div>
         <div class="timeline__content">
           <h3 class="timeline__title">{item.title}</h3>
+          {item.subtitle && <p class="timeline__subtitle">{item.subtitle}</p>}
           <p class="timeline__description">{item.description}</p>
         </div>
       </li>
@@ -70,6 +73,15 @@ const { items } = Astro.props;
 
   .timeline__title {
     font-size: var(--fs-400);
+  }
+
+  .timeline__subtitle {
+    margin-top: var(--space-1);
+    font-size: var(--fs-100);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
   }
 
   .timeline__description {

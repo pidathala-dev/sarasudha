@@ -1,9 +1,15 @@
 @import './tokens.css';
 
-/* Self-hosted fonts — subset weights only, avoids third-party requests. */
-@import '@fontsource/fraunces/400.css';
-@import '@fontsource/fraunces/500.css';
-@import '@fontsource/fraunces/600-italic.css';
+/* Self-hosted fonts — only the weight/style combinations actually used
+   below are imported. Importing a partial set (e.g. italic at only one
+   weight) forces the browser to substitute the nearest loaded face for
+   every other request in that family, which is how the previous display
+   typeface ended up rendering an unintended, overly heavy italic
+   everywhere italic was requested. See docs/BRAND_GUIDE.md. */
+@import '@fontsource/source-serif-4/400.css';
+@import '@fontsource/source-serif-4/500.css';
+@import '@fontsource/source-serif-4/400-italic.css';
+@import '@fontsource/source-serif-4/500-italic.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
@@ -63,6 +69,9 @@ h4 {
   font-weight: 500;
   margin: 0;
   color: var(--color-text);
+  /* Balances line lengths so headlines don't leave a single short/orphan
+     word on the last line. Unsupported browsers just wrap normally. */
+  text-wrap: balance;
 }
 
 h1 {
@@ -83,6 +92,9 @@ h4 {
 
 p {
   margin: 0;
+  /* Softer than `balance` — avoids orphans on longer body copy without
+     forcing exactly-even lines. Unsupported browsers just wrap normally. */
+  text-wrap: pretty;
 }
 
 a {

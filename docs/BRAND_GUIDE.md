@@ -16,6 +16,25 @@ Sarasudha is a music + culture + performance + artist discovery platform. It is 
 Carnatic academy and simpler than a streaming service — closer to a cultural publication with a
 performance calendar and an artist roster than to either of those.
 
+### Name origin
+
+Sarasudha takes its name from two names in the owner's family: **Sarala** (the owner's mother) and
+**Sudha** (the owner's sister). The brand meaning built on top of those names is larger than the two
+personal names themselves — it's conceptual guidance for how Sarasudha should feel, not a fact to
+recite:
+
+- **Sarala** → interpreted for the brand as **simplicity, sincerity and grace**. Not a literal
+  dictionary gloss — the idea is an unforced, natural quality: direct, honest, unornamented.
+- **Sudha** → interpreted for the brand as **nectar — sweetness, richness and something worth
+  savouring**. The idea of music as life-giving, enriching, worth returning to.
+- **Sarasudha** → the combination expressed through music: *Sarala gives Sarasudha its simplicity
+  and sincerity. Sudha gives it its sweetness — its nectar. Together, they become Sarasudha: music
+  that is rooted, heartfelt and meant to be shared.*
+
+Use this as a conceptual throughline, not a paragraph to paste everywhere. It belongs prominently on
+`/our-story` (see "The Name" section) and can be referenced selectively elsewhere, but the platform
+must read as bigger than its origin — see `docs/CONTENT_GUIDE.md` → "Don't overuse the family story."
+
 ### Brand architecture
 
 - **Master brand**: Sarasudha
@@ -75,14 +94,44 @@ automatically text-safe.
 
 Two type families only:
 
-- **Display**: [Fraunces](https://fonts.google.com/specimen/Fraunces) — an editorial serif with
-  warmth, used for headlines, the Ragam wordmark, and pull quotes. Self-hosted via `@fontsource`.
+- **Display**: [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) — a warm, editorial
+  serif with genuinely conventional letterforms, used for headlines, the Ragam wordmark, and pull
+  quotes. Self-hosted via `@fontsource`.
 - **Body/UI**: [Inter](https://fonts.google.com/specimen/Inter) — a highly legible sans-serif, used
   for everything else. Self-hosted via `@fontsource`.
 
 Both are open-source, self-hosted (no third-party font requests at runtime), loaded with
-`font-display: swap`, and limited to the specific weights actually used (see
-`src/styles/global.css`) to keep the font payload small.
+`font-display: swap`, and limited to the specific weight/style combinations actually used (see
+`src/styles/global.css`) to keep the font payload small **and** to avoid font-matching substitution —
+importing a partial set of weights/styles doesn't fail loudly, it silently makes the browser
+substitute the nearest available face for everything else requested in that family, which is exactly
+how the previous display type ended up rendering an unintended, overly heavy italic in several
+places. When you add a new weight or style to a component, add the matching `@fontsource` import in
+the same change.
+
+### Why Source Serif 4 (replacing Fraunces)
+
+Fraunces was the original Phase 1 display face. It was replaced after the owner reported that
+uppercase J and lowercase f looked "crooked" — a diagnosis specimen (rendering the full alphabet
+across every weight/style combination actually used on the site) confirmed two compounding causes:
+
+1. **A loading bug**: italic was only imported at one weight (600), so every italic request at any
+   other weight — the Quote component, the footer tagline, the Ragam wordmark, "Understanding
+   Carnatic Music" term headings — silently substituted that single heaviest italic face, making its
+   swashes far more prominent across the site than intended.
+2. **A font-design mismatch**: even accounting for (1), Fraunces' italic — and to a lesser extent its
+   upright — draws J and f with a pronounced calligraphic hook/swash. That's a legitimate, deliberate
+   part of Fraunces' character (it's explicitly a "soft," characterful display face, with a `WONK`
+   axis built for exactly this kind of flourish), but it reads as unconventional/unstable at the
+   sizes and frequency Sarasudha uses display type, which is the opposite of what the brief now
+   requires: **upright, stable, conventional J and f**.
+
+Source Serif 4 was chosen over the other candidates evaluated (Noto Serif, Libre Baskerville) because
+it keeps genuine editorial warmth — it's not a neutral/utilitarian face like Noto Serif — while having
+completely conventional letterforms and a full, flexible weight range with matching true italics
+(unlike Libre Baskerville, which only ships regular/bold/italic and was designed for body text, not a
+range of display sizes). It renders cleanly on screen, has no wonky/swash character by design, and
+still feels "musical, cultured, editorial, warm, premium" rather than corporate or fashion-fragile.
 
 Do not introduce a third type family. If a section needs more visual distinction, reach for weight,
 size, colour or spacing first.
@@ -130,7 +179,7 @@ and where.
 Sarasudha Ragam uses the same design system as the rest of the site — same tokens, same components —
 with a deliberately more classical inflection:
 
-- The Ragam wordmark is set in italic Fraunces in warm gold (`ragam-hero` sections use
+- The Ragam wordmark is set in italic Source Serif 4 in warm gold (`ragam-hero` sections use
   `--color-accent-gold-warm` directly against a wine background), rather than the sans-serif/mixed
   colour treatment of the primary Sarasudha wordmark.
 - Section eyebrows and index/marker numerals throughout `/ragam` use the gold-text token rather than
