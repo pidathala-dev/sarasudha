@@ -9,74 +9,112 @@ import CTA from '../components/CTA.astro';
 const timelineItems = [
   {
     marker: '1984',
-    title: 'Annamacharya Kalabharati, Cuddapah',
-    description:
-      'A cultural journey begins in Cuddapah, bringing music and community together under the name Annamacharya Kalabharati.',
+    title: 'Annamacharya Kalabharati',
+    subtitle: 'Cuddapah · Regn. No. 217/1984',
+    description: 'A cultural initiative bringing music, artists and community together.',
   },
   {
     marker: '2026',
     title: 'Sarasudha',
-    description: 'A new expression of the same cultural journey — broader in scope, built for a wider audience.',
+    description:
+      'A new chapter. A contemporary music platform inspired by that cultural journey — bringing Carnatic tradition, light music and new expression into one space.',
   },
   {
     marker: 'Beyond',
     title: 'Music across generations',
-    description: 'Building a platform for artists, audiences and cultural memory to meet.',
+    description:
+      'Preserving what deserves to endure. Creating spaces to perform. Helping another generation discover and carry music forward.',
   },
 ];
 ---
 
 <BaseLayout
-  title="Our Story"
-  description="The story behind Sarasudha — a name drawn from family, a heritage traced to 1984, and a platform built for music across generations."
+  title="Our Story | Sarasudha — Music Across Generations"
+  description="Discover the story behind Sarasudha, from the names Sarala and Sudha to its cultural roots in Annamacharya Kalabharati, Cuddapah, Regn. No. 217/1984."
   path="/our-story"
 >
   <PageHero
     eyebrow="Our Story"
-    title="Some names are chosen. Others are inherited."
-    lede="Sarasudha draws its name from Sarala and Sudha — two names that became the starting notes of a wider musical journey."
+    title="A name born from family. A musical journey rooted in 1984."
+    lede="Sarasudha takes its name from Sarala and Sudha — two names that carry ideas of simplicity, sincerity and sweetness. Its wider story reaches back to a cultural journey that began with Annamacharya Kalabharati in Cuddapah in 1984."
   />
 
-  <section class="section" aria-labelledby="why-heading">
+  <section class="section name-section" aria-labelledby="name-heading">
     <div class="container container--narrow">
-      <SectionHeader as="h2" id="why-heading" eyebrow="Why Sarasudha" title="Music moves through families, communities and generations." />
+      <SectionHeader as="h2" id="name-heading" align="center" eyebrow="The Name" title="Sarala + Sudha → Sarasudha" />
+      <p class="name-intro">Sarasudha is a name inspired by Sarala and Sudha.</p>
+
+      <div class="name-transform">
+        <div class="name-beat">
+          <p class="name-beat__word">Sarala</p>
+          <p class="name-beat__meaning">Simplicity. Sincerity. Grace.</p>
+          <p class="name-beat__note">A name associated with being natural, direct and true.</p>
+        </div>
+        <div class="name-transform__operator" aria-hidden="true">+</div>
+        <div class="name-beat">
+          <p class="name-beat__word">Sudha</p>
+          <p class="name-beat__meaning">Nectar. Sweetness. Richness.</p>
+          <p class="name-beat__note">A name that evokes something life-giving and worth savouring.</p>
+        </div>
+        <div class="name-transform__operator" aria-hidden="true">=</div>
+        <div class="name-beat name-beat--result">
+          <p class="name-beat__result"><span class="name-beat__sara">Sara</span><span class="name-beat__sudha">sudha</span></p>
+        </div>
+      </div>
+
+      <p class="name-copy">
+        Two names from one family became the name for something intended to reach far beyond it.
+        Sarasudha brings those ideas into music — honest in expression, rich in feeling and open to
+        generations of artists and listeners.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="why-heading">
+    <div class="container container--narrow">
+      <SectionHeader as="h2" id="why-heading" title="Why Sarasudha" />
       <div class="prose">
         <p>
-          Some names are chosen. Others are inherited through memory, affection and meaning.
-          Sarasudha draws its name from Sarala and Sudha — two names that became the starting
-          notes of a wider musical journey.
+          Music often begins close to home — a voice remembered, a composition heard repeatedly, a
+          concert attended as a child. But what begins personally can travel much further.
         </p>
         <p>
-          That origin is personal, but the platform it inspired is not. Sarasudha exists for
-          artists and audiences well beyond the family it is named after — a space for Carnatic
-          tradition, light music and contemporary expression to sit alongside one another.
+          Sarasudha began with two names, Sarala and Sudha. Their meanings — simplicity and
+          sincerity on one side, nectar and sweetness on the other — became an apt expression of
+          what music itself can be: honest, enriching and capable of staying with us.
+        </p>
+        <p>The name may be personal. The platform is open to everyone.</p>
+        <p>
+          That's why Sarasudha holds Carnatic tradition, light music, devotional expression and
+          contemporary interpretation in the same space — for established musicians and emerging
+          artists alike, and for audiences across generations.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="heritage-heading">
+  <section class="section" aria-labelledby="heritage-heading">
     <div class="container">
       <SectionHeader
         as="h2"
         id="heritage-heading"
         eyebrow="Where It Began"
-        title="A journey that began with Annamacharya Kalabharati."
-        lede="Rooted in a cultural journey that began with Annamacharya Kalabharati in Cuddapah in 1984."
+        title="Before Sarasudha, there was Annamacharya Kalabharati."
+        lede="The story reaches back to Cuddapah in 1984, when Annamacharya Kalabharati was established as a cultural initiative bringing music, artists and community together."
       />
       <Timeline items={timelineItems} />
       {/* P. Ramachandran's exact formal title is unverified — see docs/HERITAGE_VERIFICATION.md. Do not add a specific title here until confirmed. */}
       <p class="heritage-note">
-        The story traces its roots to Annamacharya Kalabharati, established in Cuddapah in 1984,
-        with P. Ramachandran among its early leaders. Further documentation of this period —
-        photographs, programmes and records — is being gathered as part of the Sarasudha archive.
+        A cultural initiative centred on music and community, with P. Ramachandran — the owner's
+        father — among its early leaders. Further documentation of this period — photographs,
+        programmes and records — is being gathered as part of the Sarasudha archive.
       </p>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="why-now-heading">
+  <section class="section section--alt" aria-labelledby="why-now-heading">
     <div class="container container--narrow">
-      <SectionHeader as="h2" id="why-now-heading" eyebrow="Why Now" title="Traditions survive through participation, not nostalgia." />
+      <SectionHeader as="h2" id="why-now-heading" title="Traditions survive through participation, not nostalgia." />
       <div class="prose">
         <p>
           Younger audiences are discovering music differently — through short clips, recommendations
@@ -97,7 +135,7 @@ const timelineItems = [
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="intent-heading">
+  <section class="section" aria-labelledby="intent-heading">
     <div class="container">
       <SectionHeader as="h2" id="intent-heading" eyebrow="Our Intent" title="Preserve. Perform. Pass on." />
       <div class="pillars">
@@ -176,6 +214,91 @@ const timelineItems = [
   @media (min-width: 700px) {
     .pillars {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* The Name */
+  .name-intro {
+    text-align: center;
+    max-width: 32rem;
+    margin: 0 auto var(--space-8);
+    font-size: var(--fs-300);
+    color: var(--color-text-muted);
+  }
+
+  .name-transform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .name-beat {
+    text-align: center;
+    max-width: 22rem;
+  }
+
+  .name-beat__word {
+    font-family: var(--font-display);
+    font-size: var(--fs-700);
+    color: var(--color-maroon);
+    line-height: 1;
+    margin-bottom: var(--space-3);
+  }
+
+  .name-beat__meaning {
+    font-size: var(--fs-200);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
+    margin-bottom: var(--space-2);
+  }
+
+  .name-beat__note {
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+
+  .name-transform__operator {
+    font-family: var(--font-display);
+    font-size: var(--fs-500);
+    color: var(--color-gold-text);
+  }
+
+  .name-beat--result {
+    padding-top: var(--space-2);
+  }
+
+  .name-beat__result {
+    font-family: var(--font-display);
+    font-size: clamp(var(--fs-800), 6vw, var(--fs-900));
+    line-height: 1;
+  }
+
+  .name-beat__sara {
+    color: var(--color-maroon);
+  }
+
+  .name-beat__sudha {
+    color: var(--color-gold-text);
+  }
+
+  .name-copy {
+    max-width: 38rem;
+    margin: 0 auto;
+    text-align: center;
+    font-size: var(--fs-300);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 700px) {
+    .name-transform {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-5);
     }
   }
 </style>

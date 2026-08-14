@@ -11,7 +11,11 @@ export interface SeoProps {
 
 export function buildSeo(props: SeoProps) {
   const canonical = new URL(props.path, site.url).toString();
-  const fullTitle = props.title === site.name ? site.name : `${props.title} — ${site.name}`;
+  // Most pages pass a short title ("Music") and get the site name appended
+  // automatically. A page can opt out by including the site name itself
+  // (e.g. a richer, fully-composed SEO title) — it's used verbatim.
+  const fullTitle =
+    props.title === site.name || props.title.includes(site.name) ? props.title : `${props.title} — ${site.name}`;
   return {
     title: fullTitle,
     description: props.description,

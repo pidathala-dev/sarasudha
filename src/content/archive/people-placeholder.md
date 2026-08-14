@@ -1,7 +1,8 @@
 ---
 title: "Founders and early members"
 category: "People"
-description: "Photographs and biographical notes on the people who shaped Annamacharya Kalabharati and, later, Sarasudha. Archive material being digitised."
+era: "historical"
+description: "Photographs and biographical notes on the people who shaped Annamacharya Kalabharati in Cuddapah. Archive material being digitised."
 image: "/images/archive/photograph.svg"
 imageAlt: "Abstract cream and maroon placeholder motif"
 pendingDigitisation: true

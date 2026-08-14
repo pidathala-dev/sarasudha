@@ -97,6 +97,13 @@ const archive = defineCollection({
     description: z.string(),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
+    /**
+     * Which organisation this material belongs to — kept distinct so the
+     * archive never implies Sarasudha and Annamacharya Kalabharati are the
+     * same legal entity. 'historical' = Annamacharya Kalabharati material;
+     * 'contemporary' = Sarasudha's own archive, built from today onward.
+     */
+    era: z.enum(['historical', 'contemporary']).default('historical'),
     /** True while the physical/original material has not yet been digitised. */
     pendingDigitisation: z.boolean().default(true),
     /** Sample/placeholder content used to populate the Phase 1 build. */
