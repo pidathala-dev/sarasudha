@@ -1,0 +1,34 @@
+{
+  "name": "sarasudha",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Sarasudha — a music and cultural platform bridging Carnatic tradition, light music and contemporary expression.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "build:unchecked": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "lint": "eslint . --ext .astro,.ts,.js",
+    "pretest": "npm run build",
+    "test": "playwright test",
+    "test:install": "playwright install --with-deps chromium"
+  },
+  "dependencies": {
+    "astro": "^7.2.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/inter": "^5.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
+    "eslint": "^10.8.1",
+    "eslint-plugin-astro": "^3.1.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.67.0"
+  }
+}
