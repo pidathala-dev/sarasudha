@@ -43,6 +43,7 @@ export const contactFormEndpoint: string | null =
 
 export const contactReasons = [
   'Artist / Performer',
+  'Collaboration',
   'Event',
   'Archive contribution',
   'Partnership',

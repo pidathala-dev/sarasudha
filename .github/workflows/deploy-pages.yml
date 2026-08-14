@@ -32,8 +32,6 @@ jobs:
 
       - name: Build (typecheck + astro build)
         run: npm run build
-        env:
-          PUBLIC_SHOW_DEMO_CONTENT: "true"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
