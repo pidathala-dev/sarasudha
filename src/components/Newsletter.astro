@@ -1,0 +1,45 @@
+---
+/**
+ * Community CTA. Phase 1 has no email backend, so this intentionally
+ * routes to /participate rather than presenting a signup field that
+ * cannot actually submit anywhere.
+ */
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'The next note is waiting.',
+  description = 'Join Sarasudha as we create a new space for music across generations.',
+} = Astro.props;
+---
+
+<section class="newsletter section section--inverse">
+  <div class="container newsletter__inner">
+    <h2 class="newsletter__title">{title}</h2>
+    <p class="newsletter__description">{description}</p>
+    <a href="/participate" class="btn btn-gold">Join the Community</a>
+  </div>
+</section>
+
+<style>
+  .newsletter__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-4);
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+
+  .newsletter__title {
+    color: var(--color-text-inverse);
+  }
+
+  .newsletter__description {
+    color: var(--color-text-inverse-muted);
+    font-size: var(--fs-400);
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  artist: string;
+  genre: string[];
+  date?: Date;
+  thumbnail: string;
+  thumbnailAlt: string;
+  description: string;
+  isDemoContent?: boolean;
+}
+
+const { href, title, artist, genre, date, thumbnail, thumbnailAlt, description, isDemoContent } = Astro.props;
+
+const formattedDate = date
+  ? new Intl.DateTimeFormat('en-IN', { year: 'numeric', month: 'long' }).format(date)
+  : null;
+---
+
+<article class="music-card card">
+  <a href={href} class="music-card__media-link">
+    <div class="media-frame">
+      <img src={thumbnail} alt={thumbnailAlt} loading="lazy" />
+    </div>
+  </a>
+  <div class="music-card__body">
+    <ul class="music-card__tags">
+      {genre.map((g) => <li>{g}</li>)}
+    </ul>
+    <h3 class="music-card__title">
+      <a href={href}>{title}</a>
+    </h3>
+    <p class="music-card__artist">
+      {artist}
+      {formattedDate && <span class="music-card__date"> · {formattedDate}</span>}
+    </p>
+    <p class="music-card__description">{description}</p>
+    {isDemoContent && <p class="music-card__demo-flag">Demo content</p>}
+  </div>
+</article>
+
+<style>
+  .music-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .music-card__body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .music-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .music-card__tags li {
+    font-size: var(--fs-100);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
+  }
+
+  .music-card__title a {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .music-card__title a:hover {
+    color: var(--color-maroon);
+  }
+
+  .music-card__artist {
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+
+  .music-card__description {
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+
+  .music-card__demo-flag {
+    margin-top: var(--space-1);
+    font-size: var(--fs-100);
+    font-weight: 600;
+    color: var(--color-gold-text);
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { contact } from '../config/contact';
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How Sarasudha handles information collected through this website."
+  path="/privacy"
+>
+  <PageHero eyebrow="Privacy" title="Privacy Policy" />
+
+  <section class="section">
+    <div class="container container--narrow prose">
+      <p>Last updated: 14 August 2026</p>
+
+      <h2>What this site collects</h2>
+      <p>
+        Sarasudha (sarasudha.in) is, in its current phase, a static website. No analytics or
+        tracking scripts run by default, and no cookies are set for tracking purposes. If
+        analytics are enabled in the future, this policy will be updated first, and the
+        integration is documented in the project README so the change is never silent.
+      </p>
+
+      <h2>Contact form</h2>
+      <p>
+        If you use the contact form and it is connected to a live submission service, the
+        information you provide (name, email, phone if given, reason, message) is sent to that
+        service in order to respond to your enquiry. It is not sold or used for advertising. If no
+        submission service is configured, the form does not send your information anywhere — this
+        is stated on the page itself.
+      </p>
+
+      <h2>Archive contributions</h2>
+      <p>
+        If you contact Sarasudha to contribute photographs, recordings or documents, any personal
+        information you share (such as your name or contact details) is used only to coordinate
+        that contribution.
+      </p>
+
+      <h2>Third-party embeds</h2>
+      <p>
+        Performance videos, where available, are embedded from YouTube using its privacy-enhanced
+        mode and only load after you choose to play them — not automatically when the page loads.
+        Playing a video is subject to YouTube's own privacy policy.
+      </p>
+
+      <h2>Compliance status</h2>
+      <p>
+        This policy describes current practice. It does not represent a formal assessment of
+        compliance with any specific data protection law, and no such claim is made here or
+        elsewhere on this site.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        {contact.email ? (
+          <>Questions about this policy can be sent to <a href={`mailto:${contact.email}`}>{contact.email}</a>.</>
+        ) : (
+          <>Questions about this policy can be sent through the <a href="/contact">contact page</a>.</>
+        )}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .prose h2 {
+    color: var(--color-text);
+    margin-top: var(--space-4);
+  }
+
+  .prose a {
+    color: var(--color-maroon);
+    font-weight: 600;
+  }
+</style>

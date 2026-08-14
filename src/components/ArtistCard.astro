@@ -1,0 +1,90 @@
+---
+interface Props {
+  href: string;
+  name: string;
+  photo: string;
+  photoAlt: string;
+  genre: string[];
+  location?: string;
+  bio: string;
+  isDemoContent?: boolean;
+}
+
+const { href, name, photo, photoAlt, genre, location, bio, isDemoContent } = Astro.props;
+---
+
+<article class="artist-card card">
+  <a href={href} class="artist-card__media-link">
+    <div class="artist-card__media">
+      <img src={photo} alt={photoAlt} loading="lazy" />
+    </div>
+  </a>
+  <div class="artist-card__body">
+    <h3 class="artist-card__name">
+      <a href={href}>{name}</a>
+    </h3>
+    <p class="artist-card__meta">
+      {genre.join(' · ')}
+      {location && <span> — {location}</span>}
+    </p>
+    <p class="artist-card__bio">{bio}</p>
+    {isDemoContent && <p class="artist-card__demo-flag">Demo profile</p>}
+  </div>
+</article>
+
+<style>
+  .artist-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .artist-card__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .artist-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artist-card__body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .artist-card__name a {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .artist-card__name a:hover {
+    color: var(--color-maroon);
+  }
+
+  .artist-card__meta {
+    font-size: var(--fs-100);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
+  }
+
+  .artist-card__bio {
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .artist-card__demo-flag {
+    font-size: var(--fs-100);
+    font-weight: 600;
+    color: var(--color-gold-text);
+  }
+</style>

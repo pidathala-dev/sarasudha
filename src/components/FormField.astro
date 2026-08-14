@@ -1,0 +1,108 @@
+---
+interface Props {
+  type?: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox';
+  name: string;
+  label: string;
+  required?: boolean;
+  options?: string[];
+  rows?: number;
+  autocomplete?: string;
+}
+
+const { type = 'text', name, label, required = false, options = [], rows = 5, autocomplete } = Astro.props;
+const id = `field-${name}`;
+---
+
+{
+  type === 'checkbox' ? (
+    <div class="form-field form-field--checkbox">
+      <input type="checkbox" id={id} name={name} required={required} />
+      <label for={id}>
+        {label}
+        {required && <span class="form-field__required" aria-hidden="true">*</span>}
+      </label>
+    </div>
+  ) : (
+    <div class="form-field">
+      <label for={id}>
+        {label}
+        {required && <span class="form-field__required" aria-hidden="true">*</span>}
+      </label>
+      {type === 'textarea' ? (
+        <textarea id={id} name={name} required={required} rows={rows} />
+      ) : type === 'select' ? (
+        <select id={id} name={name} required={required}>
+          <option value="" disabled selected>
+            Select one
+          </option>
+          {options.map((opt) => (
+            <option value={opt}>{opt}</option>
+          ))}
+        </select>
+      ) : (
+        <input type={type} id={id} name={name} required={required} autocomplete={autocomplete} />
+      )}
+    </div>
+  )
+}
+
+<style>
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .form-field label {
+    font-size: var(--fs-200);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .form-field__required {
+    color: var(--color-maroon);
+    margin-left: var(--space-1);
+  }
+
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-warm-white);
+    min-height: 48px;
+  }
+
+  .form-field textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  .form-field input:focus-visible,
+  .form-field textarea:focus-visible,
+  .form-field select:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 1px;
+  }
+
+  .form-field--checkbox {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .form-field--checkbox input {
+    margin-top: 4px;
+    width: 20px;
+    height: 20px;
+    min-height: auto;
+    flex-shrink: 0;
+  }
+
+  .form-field--checkbox label {
+    font-weight: 400;
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+</style>

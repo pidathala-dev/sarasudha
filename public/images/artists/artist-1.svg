@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="grad-artist-1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A1528" />
+      <stop offset="100%" stop-color="#2D101B" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#grad-artist-1)" />
+  <path d="M -40 90 C 240 44, 480 136, 720 62.400000000000006, 1000 108.4" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.16" /><path d="M -40 152 C 240 100, 480 204, 720 120.8, 1000 172.8" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.21000000000000002" /><path d="M -40 214 C 240 156, 480 272, 720 179.2, 1000 237.2" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.26" /><path d="M -40 276 C 240 212, 480 340, 720 237.6, 1000 301.6" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.31000000000000005" /><path d="M -40 338 C 240 268, 480 408, 720 296, 1000 366" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.36" /><path d="M -40 400 C 240 324, 480 476, 720 354.4, 1000 430.4" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.41000000000000003" />
+</svg>

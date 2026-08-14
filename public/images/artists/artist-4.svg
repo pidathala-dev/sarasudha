@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="grad-artist-4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A1528" />
+      <stop offset="100%" stop-color="#3a1020" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#grad-artist-4)" />
+  <circle cx="672" cy="270" r="40" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.32" /><circle cx="672" cy="270" r="74" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.29000000000000004" /><circle cx="672" cy="270" r="108" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.26" /><circle cx="672" cy="270" r="142" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.23" /><circle cx="672" cy="270" r="176" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.2" /><circle cx="672" cy="270" r="210" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.17" /><circle cx="672" cy="270" r="244" fill="none" stroke="#D7B36A" stroke-width="1.4" opacity="0.14" /><line x1="732.0" y1="270.0" x2="932.0" y2="270.0" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="714.4" y1="312.4" x2="855.8" y2="453.8" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="672.0" y1="330.0" x2="672.0" y2="530.0" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="629.6" y1="312.4" x2="488.2" y2="453.8" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="612.0" y1="270.0" x2="412.0" y2="270.0" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="629.6" y1="227.6" x2="488.2" y2="86.2" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="672.0" y1="210.0" x2="672.0" y2="10.0" stroke="#D7B36A" stroke-width="1" opacity="0.14" /><line x1="714.4" y1="227.6" x2="855.8" y2="86.2" stroke="#D7B36A" stroke-width="1" opacity="0.14" />
+</svg>

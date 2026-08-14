@@ -1,0 +1,207 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ArtistCard from '../../components/ArtistCard.astro';
+import { musicTags } from '../../content.config';
+import { showDemoContent } from '../../config/site';
+
+const artists = await getCollection('artists', (entry) => showDemoContent || !entry.data.isDemoContent);
+---
+
+<BaseLayout
+  title="Artists"
+  description="Voices worth discovering. From accomplished musicians to emerging performers, Sarasudha creates space for artists and audiences to find one another."
+  path="/artists"
+>
+  <PageHero
+    eyebrow="Artists"
+    title="Voices worth discovering."
+    lede="From accomplished musicians to emerging performers, Sarasudha creates space for artists and audiences to find one another."
+  />
+
+  <section class="section" aria-labelledby="artists-list-heading">
+    <div class="container">
+      <h2 id="artists-list-heading" class="visually-hidden">Browse artists</h2>
+
+      <div class="artist-controls">
+        <div class="artist-search">
+          <label for="artist-search-input">Search artists</label>
+          <input type="search" id="artist-search-input" placeholder="Search by name or location" data-artist-search />
+        </div>
+        <div class="filters" role="group" aria-label="Filter artists by genre" data-filters>
+          <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
+          {
+            musicTags.map((tag) => (
+              <button type="button" class="filter-chip" data-filter={tag} aria-pressed="false">
+                {tag}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <p class="filters__status" data-filter-status role="status">Showing all {artists.length} artists.</p>
+
+      {
+        artists.length > 0 ? (
+          <div class="artist-grid" data-artist-grid>
+            {artists.map((artist) => (
+              <div
+                class="artist-grid__item"
+                data-tags={artist.data.genre.join(',')}
+                data-search={`${artist.data.name} ${artist.data.location ?? ''}`.toLowerCase()}
+              >
+                <ArtistCard
+                  href={`/artists/${artist.data.slug}`}
+                  name={artist.data.name}
+                  photo={artist.data.photo}
+                  photoAlt={artist.data.photoAlt}
+                  genre={artist.data.genre}
+                  location={artist.data.location}
+                  bio={artist.data.bio}
+                  isDemoContent={artist.data.isDemoContent}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="filters__status">Artist profiles are being added. Check back soon.</p>
+        )
+      }
+      <p class="artist-grid__empty" data-empty-message hidden>No artists match your search.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .artist-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .artist-search {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 24rem;
+  }
+
+  .artist-search label {
+    font-size: var(--fs-200);
+    font-weight: 600;
+  }
+
+  .artist-search input {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .filter-chip {
+    padding: var(--space-2) var(--space-4);
+    min-height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    font-size: var(--fs-100);
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-text-muted);
+  }
+
+  .filter-chip.is-active {
+    background: var(--color-maroon);
+    border-color: var(--color-maroon);
+    color: var(--color-warm-white);
+  }
+
+  .filters__status {
+    font-size: var(--fs-100);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-7);
+  }
+
+  .artist-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .artist-grid__item[hidden] {
+    display: none;
+  }
+
+  .artist-grid__empty {
+    margin-top: var(--space-6);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 560px) {
+    .artist-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .artist-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-artist-grid] > [data-tags]');
+  const searchInput = document.querySelector<HTMLInputElement>('[data-artist-search]');
+  const status = document.querySelector('[data-filter-status]');
+  const emptyMessage = document.querySelector<HTMLElement>('[data-empty-message]');
+
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const query = searchInput?.value.trim().toLowerCase() ?? '';
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+      const tags = item.dataset.tags?.split(',') ?? [];
+      const searchText = item.dataset.search ?? '';
+      const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+      const matchesSearch = query === '' || searchText.includes(query);
+      const show = matchesFilter && matchesSearch;
+      item.hidden = !show;
+      if (show) visibleCount += 1;
+    });
+
+    if (status) {
+      status.textContent =
+        activeFilter === 'all' && query === ''
+          ? `Showing all ${items.length} artists.`
+          : `Showing ${visibleCount} artist${visibleCount === 1 ? '' : 's'}.`;
+    }
+
+    if (emptyMessage) emptyMessage.hidden = visibleCount !== 0;
+  }
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter ?? 'all';
+      filterButtons.forEach((b) => {
+        b.classList.toggle('is-active', b === button);
+        b.setAttribute('aria-pressed', String(b === button));
+      });
+      applyFilters();
+    });
+  });
+
+  searchInput?.addEventListener('input', applyFilters);
+</script>

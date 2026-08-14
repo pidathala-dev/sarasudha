@@ -1,0 +1,69 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  motif?: string;
+}
+
+const { eyebrow, title, lede, motif = '/images/motifs/hero-motif.svg' } = Astro.props;
+---
+
+<section class="page-hero">
+  <img src={motif} alt="" aria-hidden="true" class="page-hero__motif" loading="eager" />
+  <div class="container page-hero__inner">
+    {eyebrow && <p class="eyebrow eyebrow--gold">{eyebrow}</p>}
+    <h1 class="page-hero__title">{title}</h1>
+    {lede && <p class="page-hero__lede">{lede}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    background: var(--color-bg-inverse-deep);
+    color: var(--color-text-inverse);
+    overflow: hidden;
+    padding-block: var(--space-8);
+  }
+
+  .page-hero__motif {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+
+  .page-hero__inner {
+    position: relative;
+    max-width: 46rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* .page-hero doesn't use the shared `section--inverse` utility, so give
+     its eyebrow the light warm-gold directly. */
+  .page-hero .eyebrow--gold {
+    color: var(--color-accent-gold-warm);
+  }
+
+  .page-hero__title {
+    color: var(--color-text-inverse);
+  }
+
+  .page-hero__lede {
+    font-size: var(--fs-400);
+    color: var(--color-text-inverse-muted);
+    max-width: 38rem;
+  }
+
+  @media (min-width: 900px) {
+    .page-hero {
+      padding-block: var(--space-9);
+    }
+  }
+</style>

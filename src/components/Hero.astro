@@ -1,0 +1,122 @@
+---
+/**
+ * Home page hero. Typography-led composition with an abstract string/
+ * waveform motif rather than a stock photograph. No autoplay media.
+ */
+---
+
+<section class="hero">
+  <div class="hero__motif" aria-hidden="true">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" class="hero__lines" data-hero-lines>
+      <path class="hero__line" d="M -40 210 C 260 120, 500 340, 760 200 C 940 100, 1080 260, 1240 190" />
+      <path class="hero__line hero__line--2" d="M -40 340 C 300 420, 520 220, 800 360 C 980 450, 1100 300, 1240 380" />
+      <path class="hero__line hero__line--3" d="M -40 470 C 280 400, 560 540, 820 440 C 1000 380, 1120 480, 1240 430" />
+    </svg>
+  </div>
+
+  <div class="container hero__inner">
+    <p class="eyebrow eyebrow--gold">Carnatic • Light • Contemporary</p>
+    <h1 class="hero__title">Where tradition finds a new voice.</h1>
+    <p class="hero__lede">
+      Sarasudha brings together the depth of Carnatic music, the warmth of light music and the
+      freedom of contemporary expression.
+    </p>
+    <div class="hero__actions">
+      <a href="/music" class="btn btn-gold">Explore the Music</a>
+      <a href="/our-story" class="btn btn-secondary">Discover Our Story</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--color-bg-inverse-deep);
+    color: var(--color-text-inverse);
+    overflow: hidden;
+    padding-block: var(--space-9);
+  }
+
+  .hero__motif {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+  }
+
+  .hero__lines {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__line {
+    fill: none;
+    stroke: var(--color-gold-antique);
+    stroke-width: 1.4;
+    opacity: 0.5;
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: hero-draw 2.4s var(--ease-standard) forwards;
+  }
+
+  .hero__line--2 {
+    stroke: var(--color-teal);
+    opacity: 0.4;
+    animation-delay: 0.15s;
+  }
+
+  .hero__line--3 {
+    opacity: 0.3;
+    animation-delay: 0.3s;
+  }
+
+  @keyframes hero-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__line {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+  }
+
+  .hero__inner {
+    position: relative;
+    max-width: 42rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* .hero doesn't use the shared `section--inverse` utility, so give its
+     eyebrow the light warm-gold directly (the default gold variant assumes
+     a light bg and would be unreadable here). */
+  .hero .eyebrow--gold {
+    color: var(--color-accent-gold-warm);
+  }
+
+  .hero__title {
+    color: var(--color-text-inverse);
+  }
+
+  .hero__lede {
+    font-size: var(--fs-400);
+    color: var(--color-text-inverse-muted);
+    max-width: 36rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      padding-block: 7rem;
+    }
+  }
+</style>

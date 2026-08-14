@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="grad-programme" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F6EFE3" />
+      <stop offset="100%" stop-color="#e7dcc4" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#grad-programme)" />
+  <path d="M -40 100 Q 288 -20, 480 100 T 1000 60" fill="none" stroke="#4A1528" stroke-width="10" opacity="0.18" stroke-linecap="round" /><path d="M -40 200 Q 288 80, 480 200 T 1000 160" fill="none" stroke="#4A1528" stroke-width="8.4" opacity="0.24" stroke-linecap="round" /><path d="M -40 300 Q 288 180, 480 300 T 1000 260" fill="none" stroke="#4A1528" stroke-width="6.8" opacity="0.3" stroke-linecap="round" /><path d="M -40 400 Q 288 280, 480 400 T 1000 360" fill="none" stroke="#4A1528" stroke-width="5.199999999999999" opacity="0.36" stroke-linecap="round" />
+</svg>

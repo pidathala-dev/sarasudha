@@ -1,0 +1,49 @@
+---
+interface Props {
+  attribution?: string;
+  gold?: boolean;
+}
+
+const { attribution, gold = false } = Astro.props;
+---
+
+<figure class:list={['quote', { 'quote--gold': gold }]}>
+  <blockquote>
+    <p><slot /></p>
+  </blockquote>
+  {attribution && <figcaption>{attribution}</figcaption>}
+</figure>
+
+<style>
+  .quote {
+    margin: 0;
+    padding-left: var(--space-5);
+    border-left: 3px solid var(--color-gold-antique);
+  }
+
+  .quote blockquote {
+    margin: 0;
+  }
+
+  .quote p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-500);
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .section--inverse .quote p {
+    color: var(--color-text-inverse);
+  }
+
+  .quote figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+  }
+
+  .section--inverse .quote figcaption {
+    color: var(--color-text-inverse-muted);
+  }
+</style>

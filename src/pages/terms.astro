@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { contact } from '../config/contact';
+---
+
+<BaseLayout title="Terms" description="Terms of use for the Sarasudha website." path="/terms">
+  <PageHero eyebrow="Terms" title="Terms of Use" />
+
+  <section class="section">
+    <div class="container container--narrow prose">
+      <p>Last updated: 14 August 2026</p>
+
+      <h2>About this site</h2>
+      <p>
+        sarasudha.in is published by Sarasudha to share information about its music and cultural
+        programme, including its Sarasudha Ragam vertical, artists, events and heritage archive.
+      </p>
+
+      <h2>Content</h2>
+      <p>
+        Text, design and original artwork on this site belong to Sarasudha unless otherwise noted.
+        Artist biographies, photographs and recordings remain the property of the respective
+        artists or rights holders and are used with their permission where featured.
+      </p>
+
+      <h2>Demo content</h2>
+      <p>
+        Some performances, artist profiles and events on this site are placeholder content used to
+        preview the site's layout during its early build. These are labelled as demo content where
+        they appear and are not claims about real people, recordings or events.
+      </p>
+
+      <h2>Historical claims</h2>
+      <p>
+        References to Annamacharya Kalabharati and its founding in Cuddapah in 1984 describe the
+        cultural journey Sarasudha continues. Specific legal or institutional claims — such as
+        registration status — are stated only once verified against original records.
+      </p>
+
+      <h2>Use of this site</h2>
+      <p>
+        You may browse and share content from this site for personal, non-commercial purposes.
+        Please do not scrape, republish at scale, or misrepresent content from this site as your
+        own.
+      </p>
+
+      <h2>No payment or donation processing</h2>
+      <p>
+        This site does not currently process payments or donations. Any request for payment
+        claiming to be from Sarasudha through this website should be treated as suspicious.
+      </p>
+
+      <h2>Changes</h2>
+      <p>These terms may be updated as Sarasudha's platform grows. Material changes will be reflected on this page.</p>
+
+      <h2>Contact</h2>
+      <p>
+        {contact.email ? (
+          <>Questions about these terms can be sent to <a href={`mailto:${contact.email}`}>{contact.email}</a>.</>
+        ) : (
+          <>Questions about these terms can be sent through the <a href="/contact">contact page</a>.</>
+        )}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .prose h2 {
+    color: var(--color-text);
+    margin-top: var(--space-4);
+  }
+
+  .prose a {
+    color: var(--color-maroon);
+    font-weight: 600;
+  }
+</style>
