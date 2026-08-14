@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import FormField from '../components/FormField.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { contact, contactReasons, contactFormEndpoint } from '../config/contact';
+
+const hasEndpoint = Boolean(contactFormEndpoint);
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Sarasudha — for performances, events, archive contributions, partnerships, volunteering or general enquiries."
+  path="/contact"
+>
+  <PageHero eyebrow="Contact" title="Get in touch." lede="For performances, events, archive contributions, partnerships, volunteering or a general hello." />
+
+  <section class="section" aria-labelledby="contact-heading">
+    <div class="container contact-layout">
+      <div class="contact-details">
+        <h2 id="contact-heading">Reach us directly</h2>
+        {contact.email ? (
+          <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+        ) : (
+          <p class="contact-details__pending">Direct contact details are being finalised.</p>
+        )}
+        {contact.location && <p>{contact.location}</p>}
+        <div class="contact-details__social">
+          <SocialLinks />
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        {
+          !hasEndpoint && (
+            <p class="contact-form__notice" role="status">
+              This form is not yet connected to a submission service. It validates and previews
+              your message, but does not send it. Please use the email or channels alongside this
+              form until an endpoint is configured — see .env.example and README.md.
+            </p>
+          )
+        }
+
+        <form id="contact-form" novalidate data-has-endpoint={hasEndpoint ? 'true' : 'false'}>
+          <div class="contact-form__row">
+            <FormField type="text" name="name" label="Name" required autocomplete="name" />
+            <FormField type="email" name="email" label="Email" required autocomplete="email" />
+          </div>
+          <div class="contact-form__row">
+            <FormField type="tel" name="phone" label="Phone (optional)" autocomplete="tel" />
+            <FormField type="select" name="reason" label="Reason for contacting" required options={[...contactReasons]} />
+          </div>
+          <FormField type="textarea" name="message" label="Message" required rows={6} />
+
+          {/* Honeypot — hidden from real visitors via CSS, left empty; anti-spam notes in README */}
+          <div class="contact-form__honeypot" aria-hidden="true">
+            <label for="field-companyWebsite">Company website</label>
+            <input type="text" id="field-companyWebsite" name="companyWebsite" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <FormField type="checkbox" name="consent" label="I consent to Sarasudha storing my details to respond to this enquiry." required />
+
+          <p class="contact-form__status" role="status" data-form-status></p>
+
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-layout {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contact-details h2 {
+    margin-bottom: var(--space-2);
+  }
+
+  .contact-details a {
+    color: var(--color-maroon);
+    font-weight: 600;
+  }
+
+  .contact-details__pending {
+    color: var(--color-text-muted);
+  }
+
+  .contact-details__social {
+    margin-top: var(--space-4);
+  }
+
+  .contact-form__notice {
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    font-size: var(--fs-200);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-5);
+  }
+
+  #contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .contact-form__row {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact-form__status {
+    font-size: var(--fs-200);
+    font-weight: 600;
+    min-height: 1.5em;
+  }
+
+  .contact-form__status[data-state='success'] {
+    color: var(--color-accent-teal);
+  }
+
+  .contact-form__status[data-state='error'] {
+    color: var(--color-maroon);
+  }
+
+  @media (min-width: 640px) {
+    .contact-form__row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .contact-layout {
+      grid-template-columns: 1fr 1.6fr;
+    }
+  }
+</style>
+
+<script>
+  import { submitContactForm, hasContactFormEndpoint, type ContactFormPayload } from '../lib/contactForm';
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedReason = params.get('reason');
+  if (requestedReason) {
+    const select = document.getElementById('field-reason') as HTMLSelectElement | null;
+    const option = select?.querySelector(`option[value="${CSS.escape(requestedReason)}"]`);
+    if (select && option) select.value = requestedReason;
+  }
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const data = new FormData(form);
+    if (data.get('companyWebsite')) return; // honeypot triggered, silently drop
+
+    const payload: ContactFormPayload = {
+      name: String(data.get('name') ?? ''),
+      email: String(data.get('email') ?? ''),
+      phone: String(data.get('phone') ?? ''),
+      reason: String(data.get('reason') ?? ''),
+      message: String(data.get('message') ?? ''),
+      consent: data.get('consent') === 'on',
+    };
+
+    if (!hasContactFormEndpoint()) {
+      if (status) {
+        status.textContent =
+          'This is a demo form — no submission service is configured yet, so nothing was sent. See README.md for how to connect one.';
+        status.dataset.state = 'error';
+      }
+      return;
+    }
+
+    if (status) {
+      status.textContent = 'Sending…';
+      status.dataset.state = '';
+    }
+
+    const result = await submitContactForm(payload);
+    if (status) {
+      status.textContent = result.message;
+      status.dataset.state = result.ok ? 'success' : 'error';
+    }
+    if (result.ok) form.reset();
+  });
+</script>

@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CTA from '../components/CTA.astro';
+
+const paths = [
+  {
+    title: 'Perform',
+    description: 'For artists who would like to perform or collaborate.',
+    reason: 'Artist / Performer',
+  },
+  {
+    title: 'Attend',
+    description: 'Discover performances, conversations and gatherings.',
+    reason: 'Event',
+  },
+  {
+    title: 'Contribute',
+    description: 'Help preserve photographs, recordings, programmes and cultural history.',
+    reason: 'Archive contribution',
+  },
+  {
+    title: 'Support',
+    description: 'Volunteer, partner or support future cultural initiatives.',
+    reason: 'Volunteer',
+  },
+];
+---
+
+<BaseLayout
+  title="Participate"
+  description="There is a place for you in the music. Perform. Listen. Contribute. Preserve. Support."
+  path="/participate"
+>
+  <PageHero
+    eyebrow="Participate"
+    title="There is a place for you in the music."
+    lede="Perform. Listen. Contribute. Preserve. Support."
+  />
+
+  <section class="section" aria-labelledby="paths-heading">
+    <div class="container">
+      <h2 id="paths-heading" class="visually-hidden">Ways to participate</h2>
+      <div class="paths-grid">
+        {
+          paths.map((path, index) => (
+            <article class="path-card">
+              <p class="path-card__index">{String(index + 1).padStart(2, '0')}</p>
+              <h3>{path.title}</h3>
+              <p class="path-card__description">{path.description}</p>
+              <a href={`/contact?reason=${encodeURIComponent(path.reason)}`} class="path-card__link">
+                Get in touch
+                <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="The next note is waiting."
+    lede="Join Sarasudha as we create a new space for music across generations."
+    primaryLabel="Contact Us"
+    primaryHref="/contact"
+    secondaryLabel="Explore the Music"
+    secondaryHref="/music"
+  />
+</BaseLayout>
+
+<style>
+  .paths-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .path-card {
+    padding: var(--space-6);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background: var(--color-warm-white);
+  }
+
+  .path-card__index {
+    font-family: var(--font-display);
+    color: var(--color-gold-text);
+    font-size: var(--fs-400);
+    margin-bottom: var(--space-3);
+  }
+
+  .path-card h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .path-card__description {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .path-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--color-maroon);
+  }
+
+  @media (min-width: 640px) {
+    .paths-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .paths-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,299 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import MusicCard from '../components/MusicCard.astro';
+import ArtistCard from '../components/ArtistCard.astro';
+import EventCard from '../components/EventCard.astro';
+import EmptyState from '../components/EmptyState.astro';
+import { showDemoContent } from '../config/site';
+
+const performances = await getCollection('performances', (entry) => showDemoContent || !entry.data.isDemoContent);
+const carnaticPerformances = performances.filter((p) => p.data.genre.includes('Carnatic'));
+const conversations = carnaticPerformances.filter((p) => p.data.title.toLowerCase().includes('conversation'));
+
+const artists = await getCollection('artists', (entry) => showDemoContent || !entry.data.isDemoContent);
+const carnaticArtists = artists.filter((a) => a.data.genre.includes('Carnatic'));
+const youngVoices = carnaticArtists.filter((a) => a.data.genre.includes('Young Artists') || a.data.instruments.length > 0);
+
+const events = await getCollection('events', (entry) => showDemoContent || !entry.data.isDemoContent);
+const upcomingEvents = events
+  .filter((e) => e.data.status === 'upcoming')
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const understandingTopics = [
+  { title: 'Raga', description: 'The melodic framework that gives a composition its distinct character and mood.' },
+  { title: 'Tala', description: 'The rhythmic cycle underlying a composition, kept by hand gestures during performance.' },
+  { title: 'Kriti', description: 'A structured devotional composition, typically in three sections, at the heart of the Carnatic repertoire.' },
+  { title: 'Manodharma', description: 'The improvisational element of Carnatic music — melodic and rhythmic invention within a raga’s grammar.' },
+];
+---
+
+<BaseLayout
+  title="Sarasudha Ragam"
+  description="The classical heart of Sarasudha — performances, compositions, conversations and the continuing story of Carnatic music."
+  path="/ragam"
+>
+  <section class="ragam-hero">
+    <img src="/images/motifs/ragam-hero.svg" alt="" aria-hidden="true" class="ragam-hero__motif" />
+    <div class="container ragam-hero__inner">
+      <p class="eyebrow eyebrow--gold">Sarasudha Ragam</p>
+      <h1 class="ragam-hero__title">Ragam</h1>
+      <p class="ragam-hero__subheading">The classical heart of Sarasudha.</p>
+      <p class="ragam-hero__lede">
+        Performances, compositions, conversations and the continuing story of Carnatic music.
+      </p>
+    </div>
+  </section>
+
+  {
+    carnaticPerformances.length > 0 && (
+      <section class="section ragam-section" aria-labelledby="featured-heading">
+        <div class="container">
+          <SectionHeader as="h2" id="featured-heading" eyebrow="Featured Performances" title="Recent from the Ragam stage." gold />
+          <div class="card-grid">
+            {carnaticPerformances.slice(0, 3).map((performance) => (
+              <MusicCard
+                href={`/music#${performance.id}`}
+                title={performance.data.title}
+                artist={performance.data.artist}
+                genre={performance.data.genre}
+                date={performance.data.date}
+                thumbnail={performance.data.thumbnail}
+                thumbnailAlt={performance.data.thumbnailAlt}
+                description={performance.data.description}
+                isDemoContent={performance.data.isDemoContent}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--alt ragam-section" aria-labelledby="composers-heading">
+    <div class="container">
+      <SectionHeader
+        as="h2"
+        id="composers-heading"
+        eyebrow="Composers & Compositions"
+        title="The lineage behind the repertoire."
+        lede="A growing index of composers and the compositions that continue to shape Carnatic performance."
+        gold
+      />
+      <EmptyState
+        title="This index is being built."
+        description="Composer and composition profiles will appear here as the archive grows."
+      />
+    </div>
+  </section>
+
+  {
+    conversations.length > 0 && (
+      <section class="section ragam-section" aria-labelledby="conversations-heading">
+        <div class="container">
+          <SectionHeader as="h2" id="conversations-heading" eyebrow="Artist Conversations" title="The stories behind the music." gold />
+          <div class="card-grid">
+            {conversations.map((performance) => (
+              <MusicCard
+                href={`/music#${performance.id}`}
+                title={performance.data.title}
+                artist={performance.data.artist}
+                genre={performance.data.genre}
+                date={performance.data.date}
+                thumbnail={performance.data.thumbnail}
+                thumbnailAlt={performance.data.thumbnailAlt}
+                description={performance.data.description}
+                isDemoContent={performance.data.isDemoContent}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    youngVoices.length > 0 && (
+      <section class="section section--alt ragam-section" aria-labelledby="young-voices-heading">
+        <div class="container">
+          <SectionHeader as="h2" id="young-voices-heading" eyebrow="Young Classical Voices" title="Carrying the tradition forward." gold />
+          <div class="card-grid">
+            {youngVoices.slice(0, 3).map((artist) => (
+              <ArtistCard
+                href={`/artists/${artist.data.slug}`}
+                name={artist.data.name}
+                photo={artist.data.photo}
+                photoAlt={artist.data.photoAlt}
+                genre={artist.data.genre}
+                location={artist.data.location}
+                bio={artist.data.bio}
+                isDemoContent={artist.data.isDemoContent}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section ragam-section" aria-labelledby="understanding-heading">
+    <div class="container">
+      <SectionHeader
+        as="h2"
+        id="understanding-heading"
+        eyebrow="Understanding Carnatic Music"
+        title="A few terms to start with."
+        gold
+      />
+      <div class="terms-grid">
+        {understandingTopics.map((topic) => (
+          <div class="terms-grid__item">
+            <h3>{topic.title}</h3>
+            <p>{topic.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt ragam-section" aria-labelledby="ragam-events-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="ragam-events-heading" eyebrow="Upcoming Ragam Events" title="Where to hear it live." gold />
+      {
+        upcomingEvents.length > 0 ? (
+          <div class="events-list">
+            {upcomingEvents.map((event) => (
+              <EventCard
+                title={event.data.title}
+                date={event.data.date}
+                startTime={event.data.startTime}
+                venue={event.data.venue}
+                city={event.data.city}
+                description={event.data.description}
+                image={event.data.image}
+                imageAlt={event.data.imageAlt}
+                eventType={event.data.eventType}
+                status={event.data.status}
+                registrationUrl={event.data.registrationUrl}
+                isDemoContent={event.data.isDemoContent}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="New Ragam gatherings are being composed."
+            description="Join our community to hear first."
+            ctaLabel="Join the Community"
+            ctaHref="/participate"
+          />
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ragam-hero {
+    position: relative;
+    background: var(--color-bg-inverse-deep);
+    color: var(--color-text-inverse);
+    overflow: hidden;
+    padding-block: var(--space-9);
+  }
+
+  .ragam-hero__motif {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+
+  .ragam-hero__inner {
+    position: relative;
+    max-width: 38rem;
+  }
+
+  .ragam-hero__title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(var(--fs-800), 6vw, var(--fs-900));
+    color: var(--color-gold-warm);
+    line-height: 1;
+  }
+
+  .ragam-hero__subheading {
+    margin-top: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--fs-500);
+    color: var(--color-text-inverse);
+  }
+
+  .ragam-hero__lede {
+    margin-top: var(--space-3);
+    color: var(--color-text-inverse-muted);
+    font-size: var(--fs-300);
+  }
+
+  /* .ragam-hero is a dark section that doesn't use the shared
+     `section--inverse` utility, so its eyebrow needs its own override to
+     the light warm-gold (the default gold variant assumes a light bg). */
+  .ragam-hero .eyebrow--gold {
+    color: var(--color-accent-gold-warm);
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .terms-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .terms-grid__item {
+    padding: var(--space-5);
+    border-top: 2px solid var(--color-gold-antique);
+  }
+
+  .terms-grid__item h3 {
+    font-style: italic;
+    margin-bottom: var(--space-2);
+  }
+
+  .terms-grid__item p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-200);
+  }
+
+  @media (min-width: 640px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .terms-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .terms-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

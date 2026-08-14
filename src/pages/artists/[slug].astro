@@ -1,0 +1,232 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import MusicCard from '../../components/MusicCard.astro';
+import EventCard from '../../components/EventCard.astro';
+import ArtistCard from '../../components/ArtistCard.astro';
+import SocialLinks from '../../components/SocialLinks.astro';
+import { personSchema } from '../../lib/seo';
+import { showDemoContent } from '../../config/site';
+
+export async function getStaticPaths() {
+  const artists = await getCollection('artists', (entry) => showDemoContent || !entry.data.isDemoContent);
+  return artists.map((artist) => ({
+    params: { slug: artist.data.slug },
+    props: { artist },
+  }));
+}
+
+const { artist } = Astro.props;
+const { Content } = await render(artist);
+
+const allPerformances = await getCollection('performances', (entry) => showDemoContent || !entry.data.isDemoContent);
+const featuredPerformances = allPerformances.filter((p) => artist.data.featuredPerformances.includes(p.id));
+
+const allEvents = await getCollection('events', (entry) => showDemoContent || !entry.data.isDemoContent);
+const artistEvents = allEvents.filter(
+  (e) => e.data.status === 'upcoming' && e.data.artists.includes(artist.data.name)
+);
+
+const allArtists = await getCollection('artists', (entry) => showDemoContent || !entry.data.isDemoContent);
+const relatedArtists = allArtists
+  .filter((a) => a.id !== artist.id && a.data.genre.some((g) => artist.data.genre.includes(g)))
+  .slice(0, 3);
+
+const socialEntries = Object.entries(artist.data.social).filter(([, value]) => Boolean(value));
+---
+
+<BaseLayout
+  title={artist.data.name}
+  description={artist.data.bio}
+  path={`/artists/${artist.data.slug}`}
+  type="profile"
+  structuredData={personSchema({ name: artist.data.name, bio: artist.data.bio, genre: artist.data.genre })}
+>
+  <article class="artist-profile">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Artists', href: '/artists' }, { label: artist.data.name }]} />
+    </div>
+
+    <div class="container artist-profile__hero">
+      <div class="artist-profile__portrait">
+        <img src={artist.data.photo} alt={artist.data.photoAlt} />
+      </div>
+      <div class="artist-profile__intro">
+        <p class="eyebrow">{artist.data.genre.join(' · ')}</p>
+        <h1>{artist.data.name}</h1>
+        {artist.data.location && <p class="artist-profile__location">{artist.data.location}</p>}
+        {artist.data.instruments.length > 0 && (
+          <p class="artist-profile__instruments">{artist.data.instruments.join(', ')}</p>
+        )}
+        {artist.data.isDemoContent && <p class="artist-profile__demo">This is a demo profile used to preview the layout.</p>}
+        {socialEntries.length > 0 && (
+          <div class="artist-profile__links">
+            <SocialLinks />
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="container container--narrow artist-profile__bio">
+      <Content />
+    </div>
+
+    {
+      featuredPerformances.length > 0 && (
+        <section class="section section--alt" aria-labelledby="performances-heading">
+          <div class="container">
+            <h2 id="performances-heading">Selected performances</h2>
+            <div class="card-grid">
+              {featuredPerformances.map((performance) => (
+                <MusicCard
+                  href={`/music#${performance.id}`}
+                  title={performance.data.title}
+                  artist={performance.data.artist}
+                  genre={performance.data.genre}
+                  date={performance.data.date}
+                  thumbnail={performance.data.thumbnail}
+                  thumbnailAlt={performance.data.thumbnailAlt}
+                  description={performance.data.description}
+                  isDemoContent={performance.data.isDemoContent}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      artistEvents.length > 0 && (
+        <section class="section" aria-labelledby="events-heading">
+          <div class="container">
+            <h2 id="events-heading">Upcoming events</h2>
+            <div class="events-list">
+              {artistEvents.map((event) => (
+                <EventCard
+                  title={event.data.title}
+                  date={event.data.date}
+                  startTime={event.data.startTime}
+                  venue={event.data.venue}
+                  city={event.data.city}
+                  description={event.data.description}
+                  image={event.data.image}
+                  imageAlt={event.data.imageAlt}
+                  eventType={event.data.eventType}
+                  status={event.data.status}
+                  registrationUrl={event.data.registrationUrl}
+                  isDemoContent={event.data.isDemoContent}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      relatedArtists.length > 0 && (
+        <section class="section section--alt" aria-labelledby="related-heading">
+          <div class="container">
+            <h2 id="related-heading">Related artists</h2>
+            <div class="card-grid">
+              {relatedArtists.map((related) => (
+                <ArtistCard
+                  href={`/artists/${related.data.slug}`}
+                  name={related.data.name}
+                  photo={related.data.photo}
+                  photoAlt={related.data.photoAlt}
+                  genre={related.data.genre}
+                  location={related.data.location}
+                  bio={related.data.bio}
+                  isDemoContent={related.data.isDemoContent}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .artist-profile__hero {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  .artist-profile__portrait {
+    aspect-ratio: 4 / 5;
+    max-width: 22rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .artist-profile__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artist-profile__intro h1 {
+    margin-block: var(--space-2) var(--space-3);
+  }
+
+  .artist-profile__location,
+  .artist-profile__instruments {
+    color: var(--color-text-muted);
+  }
+
+  .artist-profile__demo {
+    margin-top: var(--space-3);
+    font-size: var(--fs-100);
+    font-weight: 600;
+    color: var(--color-gold-text);
+  }
+
+  .artist-profile__links {
+    margin-top: var(--space-5);
+  }
+
+  .artist-profile__bio {
+    padding-bottom: var(--space-8);
+    color: var(--color-text-muted);
+    font-size: var(--fs-300);
+    line-height: var(--lh-normal);
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    margin-top: var(--space-6);
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .artist-profile__hero {
+      grid-template-columns: 22rem 1fr;
+      align-items: center;
+    }
+
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

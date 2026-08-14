@@ -1,0 +1,199 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import MediaEmbed from '../components/MediaEmbed.astro';
+import { musicTags } from '../content.config';
+import { showDemoContent } from '../config/site';
+
+const performances = (await getCollection('performances', (entry) => showDemoContent || !entry.data.isDemoContent)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout
+  title="Music"
+  description="One tradition, many expressions. Explore Carnatic, light, devotional and contemporary music from Sarasudha."
+  path="/music"
+>
+  <PageHero
+    eyebrow="Music"
+    title="One tradition. Many expressions."
+    lede="Music does not stop at the boundaries we give it. Sarasudha brings classical depth, familiar melodies and new interpretations into one cultural conversation."
+  />
+
+  <section class="section" aria-labelledby="filter-heading">
+    <div class="container">
+      <h2 id="filter-heading" class="visually-hidden">Filter performances by tag</h2>
+      <div class="filters" role="group" aria-label="Filter performances by tag" data-filters>
+        <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
+        {
+          musicTags.map((tag) => (
+            <button type="button" class="filter-chip" data-filter={tag} aria-pressed="false">
+              {tag}
+            </button>
+          ))
+        }
+      </div>
+      <p class="filters__status" data-filter-status role="status">Showing all {performances.length} performances.</p>
+
+      {
+        performances.length > 0 ? (
+          <div class="performance-list" data-performance-list>
+            {performances.map((performance) => (
+              <article
+                id={performance.id}
+                class="performance-entry"
+                data-tags={performance.data.genre.join(',')}
+              >
+                <div class="performance-entry__media">
+                  <MediaEmbed
+                    youtubeUrl={performance.data.youtubeUrl}
+                    thumbnail={performance.data.thumbnail}
+                    thumbnailAlt={performance.data.thumbnailAlt}
+                    title={performance.data.title}
+                  />
+                </div>
+                <div class="performance-entry__body">
+                  <ul class="performance-entry__tags">
+                    {performance.data.genre.map((g) => (
+                      <li>{g}</li>
+                    ))}
+                  </ul>
+                  <h3>{performance.data.title}</h3>
+                  <p class="performance-entry__artist">
+                    {performance.data.artist} ·{' '}
+                    {new Intl.DateTimeFormat('en-IN', { year: 'numeric', month: 'long' }).format(performance.data.date)}
+                  </p>
+                  <p class="performance-entry__description">{performance.data.description}</p>
+                  {performance.data.isDemoContent && <p class="performance-entry__demo">Demo content</p>}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="filters__status">Performances are being added. Check back soon.</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .filter-chip {
+    padding: var(--space-2) var(--space-4);
+    min-height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    font-size: var(--fs-100);
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .filter-chip.is-active {
+    background: var(--color-maroon);
+    border-color: var(--color-maroon);
+    color: var(--color-warm-white);
+  }
+
+  .filters__status {
+    font-size: var(--fs-100);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-7);
+  }
+
+  .performance-list {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+  }
+
+  .performance-entry {
+    display: grid;
+    gap: var(--space-5);
+    scroll-margin-top: 100px;
+  }
+
+  .performance-entry[hidden] {
+    display: none;
+  }
+
+  .performance-entry__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .performance-entry__tags li {
+    font-size: var(--fs-100);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-accent-teal);
+  }
+
+  .performance-entry__artist {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .performance-entry__description {
+    color: var(--color-text-muted);
+  }
+
+  .performance-entry__demo {
+    margin-top: var(--space-2);
+    font-size: var(--fs-100);
+    font-weight: 600;
+    color: var(--color-gold-text);
+  }
+
+  @media (min-width: 800px) {
+    .performance-entry {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: center;
+    }
+  }
+</style>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const entries = document.querySelectorAll<HTMLElement>('[data-tags]');
+  const status = document.querySelector('[data-filter-status]');
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      filterButtons.forEach((b) => {
+        b.classList.toggle('is-active', b === button);
+        b.setAttribute('aria-pressed', String(b === button));
+      });
+
+      let visibleCount = 0;
+      entries.forEach((entry) => {
+        const tags = entry.dataset.tags?.split(',') ?? [];
+        const show = filter === 'all' || tags.includes(filter ?? '');
+        entry.hidden = !show;
+        if (show) visibleCount += 1;
+      });
+
+      if (status) {
+        status.textContent =
+          filter === 'all'
+            ? `Showing all ${entries.length} performances.`
+            : `Showing ${visibleCount} performance${visibleCount === 1 ? '' : 's'} tagged “${filter}”.`;
+      }
+    });
+  });
+</script>

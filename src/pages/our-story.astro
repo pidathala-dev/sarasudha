@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Timeline from '../components/Timeline.astro';
+import Quote from '../components/Quote.astro';
+import CTA from '../components/CTA.astro';
+
+const timelineItems = [
+  {
+    marker: '1984',
+    title: 'Annamacharya Kalabharati, Cuddapah',
+    description:
+      'A cultural journey begins in Cuddapah, bringing music and community together under the name Annamacharya Kalabharati.',
+  },
+  {
+    marker: '2026',
+    title: 'Sarasudha',
+    description: 'A new expression of the same cultural journey — broader in scope, built for a wider audience.',
+  },
+  {
+    marker: 'Beyond',
+    title: 'Music across generations',
+    description: 'Building a platform for artists, audiences and cultural memory to meet.',
+  },
+];
+---
+
+<BaseLayout
+  title="Our Story"
+  description="The story behind Sarasudha — a name drawn from family, a heritage traced to 1984, and a platform built for music across generations."
+  path="/our-story"
+>
+  <PageHero
+    eyebrow="Our Story"
+    title="Some names are chosen. Others are inherited."
+    lede="Sarasudha draws its name from Sarala and Sudha — two names that became the starting notes of a wider musical journey."
+  />
+
+  <section class="section" aria-labelledby="why-heading">
+    <div class="container container--narrow">
+      <SectionHeader as="h2" id="why-heading" eyebrow="Why Sarasudha" title="Music moves through families, communities and generations." />
+      <div class="prose">
+        <p>
+          Some names are chosen. Others are inherited through memory, affection and meaning.
+          Sarasudha draws its name from Sarala and Sudha — two names that became the starting
+          notes of a wider musical journey.
+        </p>
+        <p>
+          That origin is personal, but the platform it inspired is not. Sarasudha exists for
+          artists and audiences well beyond the family it is named after — a space for Carnatic
+          tradition, light music and contemporary expression to sit alongside one another.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="heritage-heading">
+    <div class="container">
+      <SectionHeader
+        as="h2"
+        id="heritage-heading"
+        eyebrow="Where It Began"
+        title="A journey that began with Annamacharya Kalabharati."
+        lede="Rooted in a cultural journey that began with Annamacharya Kalabharati in Cuddapah in 1984."
+      />
+      <Timeline items={timelineItems} />
+      {/* P. Ramachandran's exact formal title is unverified — see docs/HERITAGE_VERIFICATION.md. Do not add a specific title here until confirmed. */}
+      <p class="heritage-note">
+        The story traces its roots to Annamacharya Kalabharati, established in Cuddapah in 1984,
+        with P. Ramachandran among its early leaders. Further documentation of this period —
+        photographs, programmes and records — is being gathered as part of the Sarasudha archive.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why-now-heading">
+    <div class="container container--narrow">
+      <SectionHeader as="h2" id="why-now-heading" eyebrow="Why Now" title="Traditions survive through participation, not nostalgia." />
+      <div class="prose">
+        <p>
+          Younger audiences are discovering music differently — through short clips, recommendations
+          and conversation, not only through concert halls. Digital platforms offer a kind of reach
+          that a single hall or city never could, but they also flatten context: a composition
+          without its raga, a performance without the story of the artist behind it.
+        </p>
+        <p>
+          Artists, meanwhile, need spaces that value depth over virality — places built to hold the
+          background of a piece of music, not just the clip. Sarasudha is an attempt to build one of
+          those spaces: to preserve context and stories around music, while still meeting audiences
+          where they already are.
+        </p>
+      </div>
+      <Quote attribution="Sarasudha">
+        Rooted in tradition. Open to every note.
+      </Quote>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="intent-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="intent-heading" eyebrow="Our Intent" title="Preserve. Perform. Pass on." />
+      <div class="pillars">
+        <article class="pillar">
+          <p class="pillar__index">01</p>
+          <h3>Preserve</h3>
+          <p>Document music, people, stories and cultural memory.</p>
+        </article>
+        <article class="pillar">
+          <p class="pillar__index">02</p>
+          <h3>Perform</h3>
+          <p>Create spaces where music can be heard, experienced and reinterpreted.</p>
+        </article>
+        <article class="pillar">
+          <p class="pillar__index">03</p>
+          <h3>Pass On</h3>
+          <p>Connect generations and encourage younger artists and audiences.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    eyebrow="Heritage"
+    title="Keeping memory audible."
+    lede="Explore the archive we are building around Annamacharya Kalabharati and the Sarasudha story."
+    primaryLabel="Visit the Heritage Archive"
+    primaryHref="/heritage"
+    secondaryLabel="Contact Us"
+    secondaryHref="/contact"
+  />
+</BaseLayout>
+
+<style>
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: var(--fs-300);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  .heritage-note {
+    margin-top: var(--space-6);
+    max-width: 42rem;
+    color: var(--color-text-muted);
+    font-size: var(--fs-200);
+  }
+
+  .pillars {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .pillar {
+    padding: var(--space-6);
+    background: var(--color-warm-white);
+    border-radius: var(--radius-md);
+    border: var(--border-hairline);
+  }
+
+  .pillar__index {
+    font-family: var(--font-display);
+    color: var(--color-gold-text);
+    font-size: var(--fs-400);
+    margin-bottom: var(--space-3);
+  }
+
+  .pillar p:last-child {
+    color: var(--color-text-muted);
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 700px) {
+    .pillars {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import EventCard from '../components/EventCard.astro';
+import EmptyState from '../components/EmptyState.astro';
+import { eventSchema } from '../lib/seo';
+import { showDemoContent } from '../config/site';
+
+const events = await getCollection('events', (entry) => showDemoContent || !entry.data.isDemoContent);
+
+const upcoming = events
+  .filter((e) => e.data.status === 'upcoming' || e.data.status === 'cancelled')
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const past = events
+  .filter((e) => e.data.status === 'completed')
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const structuredData = upcoming.map((event) =>
+  eventSchema({
+    title: event.data.title,
+    description: event.data.description,
+    date: event.data.date,
+    venue: event.data.venue,
+    city: event.data.city,
+    status: event.data.status,
+  })
+);
+---
+
+<BaseLayout
+  title="Events"
+  description="Upcoming and past Sarasudha gatherings — performances, lecture demonstrations and conversations."
+  path="/events"
+  structuredData={structuredData}
+>
+  <PageHero
+    eyebrow="Events"
+    title="Gatherings, in person and online."
+    lede="Performances, lecture demonstrations and conversations — where the Sarasudha community meets."
+  />
+
+  <section class="section" aria-labelledby="upcoming-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="upcoming-heading" title="Upcoming" />
+      {
+        upcoming.length > 0 ? (
+          <div class="events-list">
+            {upcoming.map((event) => (
+              <EventCard
+                title={event.data.title}
+                date={event.data.date}
+                startTime={event.data.startTime}
+                venue={event.data.venue}
+                city={event.data.city}
+                description={event.data.description}
+                image={event.data.image}
+                imageAlt={event.data.imageAlt}
+                eventType={event.data.eventType}
+                status={event.data.status}
+                registrationUrl={event.data.registrationUrl}
+                isDemoContent={event.data.isDemoContent}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="New Sarasudha gatherings are being composed."
+            description="Join our community to hear first."
+            ctaLabel="Join the Community"
+            ctaHref="/participate"
+          />
+        )
+      }
+    </div>
+  </section>
+
+  {
+    past.length > 0 && (
+      <section class="section section--alt" aria-labelledby="past-heading">
+        <div class="container">
+          <SectionHeader as="h2" id="past-heading" title="Past" />
+          <div class="events-list">
+            {past.map((event) => (
+              <EventCard
+                title={event.data.title}
+                date={event.data.date}
+                startTime={event.data.startTime}
+                venue={event.data.venue}
+                city={event.data.city}
+                description={event.data.description}
+                image={event.data.image}
+                imageAlt={event.data.imageAlt}
+                eventType={event.data.eventType}
+                status={event.data.status}
+                isDemoContent={event.data.isDemoContent}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+</style>

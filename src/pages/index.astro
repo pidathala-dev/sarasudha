@@ -1,0 +1,305 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import MusicCard from '../components/MusicCard.astro';
+import ArtistCard from '../components/ArtistCard.astro';
+import EventCard from '../components/EventCard.astro';
+import EmptyState from '../components/EmptyState.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { showDemoContent } from '../config/site';
+
+const allPerformances = await getCollection('performances', (entry) => showDemoContent || !entry.data.isDemoContent);
+const featuredPerformances = allPerformances.filter((p) => p.data.featured).slice(0, 4);
+
+const allArtists = await getCollection('artists', (entry) => showDemoContent || !entry.data.isDemoContent);
+const featuredArtists = allArtists.filter((a) => a.data.featured).slice(0, 4);
+
+const allEvents = await getCollection('events', (entry) => showDemoContent || !entry.data.isDemoContent);
+const upcomingEvents = allEvents
+  .filter((e) => e.data.status === 'upcoming')
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Sarasudha"
+  description="Sarasudha brings together Carnatic tradition, light music and contemporary expression — creating a space for artists, audiences and generations to connect through music."
+  path="/"
+>
+  <Hero />
+
+  <section class="section" aria-labelledby="music-unbound-heading">
+    <div class="container">
+      <SectionHeader
+        as="h2"
+        id="music-unbound-heading"
+        eyebrow="One Tradition, Many Expressions"
+        title="Music does not stop at the boundaries we give it."
+        lede="Sarasudha brings classical depth, familiar melodies and new interpretations into one cultural conversation."
+      />
+      <div class="unbound-grid">
+        <article class="unbound-card">
+          <p class="unbound-card__index">01</p>
+          <h3>Carnatic</h3>
+          <p>Timeless compositions, extraordinary musicians and the traditions that continue to shape Indian music.</p>
+        </article>
+        <article class="unbound-card">
+          <p class="unbound-card__index">02</p>
+          <h3>Light Music</h3>
+          <p>Melody beyond boundaries — from Telugu light music and devotional expression to memorable compositions across generations.</p>
+        </article>
+        <article class="unbound-card">
+          <p class="unbound-card__index">03</p>
+          <h3>New Expressions</h3>
+          <p>Young artists, collaborations and contemporary interpretations that respect tradition without being constrained by it.</p>
+        </article>
+      </div>
+      <a href="/music" class="btn btn-secondary unbound-cta">Explore the Music</a>
+    </div>
+  </section>
+
+  <section class="section ragam-feature" aria-labelledby="ragam-heading">
+    <img src="/images/motifs/ragam-hero.svg" alt="" aria-hidden="true" class="ragam-feature__motif" />
+    <div class="container ragam-feature__inner">
+      <p class="eyebrow eyebrow--gold">Sarasudha Ragam</p>
+      <h2 id="ragam-heading" class="ragam-feature__title">The classical heart of Sarasudha.</h2>
+      <p class="ragam-feature__lede">
+        A space dedicated to Carnatic music — performances, compositions, conversations and the
+        stories behind a living tradition.
+      </p>
+      <a href="/ragam" class="btn btn-gold">Enter Ragam</a>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="heritage-heading">
+    <div class="container heritage-grid">
+      <div>
+        <p class="eyebrow">1984 → 2026 → Beyond</p>
+        <h2 id="heritage-heading">A journey that began with music.</h2>
+        <p class="heritage-copy">
+          The Sarasudha story reaches back to Cuddapah in 1984 and the cultural journey of
+          Annamacharya Kalabharati. What began as an effort to celebrate music and culture now
+          inspires a new platform for a new generation.
+        </p>
+        <a href="/our-story" class="btn btn-secondary">Explore Our Story</a>
+      </div>
+      <img src="/images/motifs/heritage-motif.svg" alt="" aria-hidden="true" class="heritage-grid__motif" />
+    </div>
+  </section>
+
+  {
+    featuredPerformances.length > 0 && (
+      <section class="section" aria-labelledby="performances-heading">
+        <div class="container">
+          <SectionHeader as="h2" id="performances-heading" eyebrow="Featured Performances" title="Recent and notable." />
+          <div class="card-grid">
+            {featuredPerformances.map((performance) => (
+              <MusicCard
+                href={`/music#${performance.id}`}
+                title={performance.data.title}
+                artist={performance.data.artist}
+                genre={performance.data.genre}
+                date={performance.data.date}
+                thumbnail={performance.data.thumbnail}
+                thumbnailAlt={performance.data.thumbnailAlt}
+                description={performance.data.description}
+                isDemoContent={performance.data.isDemoContent}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    featuredArtists.length > 0 && (
+      <section class="section section--alt" aria-labelledby="artists-heading">
+        <div class="container">
+          <SectionHeader as="h2" id="artists-heading" title="Voices worth discovering." />
+          <div class="card-grid">
+            {featuredArtists.map((artist) => (
+              <ArtistCard
+                href={`/artists/${artist.data.slug}`}
+                name={artist.data.name}
+                photo={artist.data.photo}
+                photoAlt={artist.data.photoAlt}
+                genre={artist.data.genre}
+                location={artist.data.location}
+                bio={artist.data.bio}
+                isDemoContent={artist.data.isDemoContent}
+              />
+            ))}
+          </div>
+          <a href="/artists" class="btn btn-secondary unbound-cta">Meet the Artists</a>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="events-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="events-heading" eyebrow="Events" title="Gatherings, old and new." />
+      {
+        upcomingEvents.length > 0 ? (
+          <div class="events-list">
+            {upcomingEvents.map((event) => (
+              <EventCard
+                title={event.data.title}
+                date={event.data.date}
+                startTime={event.data.startTime}
+                venue={event.data.venue}
+                city={event.data.city}
+                description={event.data.description}
+                image={event.data.image}
+                imageAlt={event.data.imageAlt}
+                eventType={event.data.eventType}
+                status={event.data.status}
+                registrationUrl={event.data.registrationUrl}
+                isDemoContent={event.data.isDemoContent}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="New Sarasudha gatherings are being composed."
+            description="Join our community to hear first."
+            ctaLabel="Join the Community"
+            ctaHref="/participate"
+          />
+        )
+      }
+    </div>
+  </section>
+
+  <Newsletter />
+</BaseLayout>
+
+<style>
+  .unbound-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .unbound-card {
+    padding-top: var(--space-5);
+    border-top: var(--border-hairline);
+  }
+
+  .unbound-card__index {
+    font-family: var(--font-display);
+    font-size: var(--fs-300);
+    color: var(--color-gold-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .unbound-card h3 {
+    margin-bottom: var(--space-3);
+  }
+
+  .unbound-card p {
+    color: var(--color-text-muted);
+  }
+
+  .unbound-cta {
+    margin-top: var(--space-7);
+  }
+
+  .ragam-feature {
+    position: relative;
+    background: var(--color-bg-inverse-deep);
+    color: var(--color-text-inverse);
+    overflow: hidden;
+  }
+
+  .ragam-feature__motif {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+  }
+
+  .ragam-feature__inner {
+    position: relative;
+    max-width: 38rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* .ragam-feature doesn't use the shared `section--inverse` utility, so
+     give its eyebrow the light warm-gold directly. */
+  .ragam-feature .eyebrow--gold {
+    color: var(--color-accent-gold-warm);
+  }
+
+  .ragam-feature__title {
+    color: var(--color-text-inverse);
+  }
+
+  .ragam-feature__lede {
+    color: var(--color-text-inverse-muted);
+    font-size: var(--fs-400);
+  }
+
+  .heritage-grid {
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  .heritage-grid h2 {
+    margin-block: var(--space-3) var(--space-4);
+  }
+
+  .heritage-copy {
+    color: var(--color-text-muted);
+    font-size: var(--fs-300);
+    max-width: 34rem;
+    margin-bottom: var(--space-5);
+  }
+
+  .heritage-grid__motif {
+    border-radius: var(--radius-lg);
+    width: 100%;
+    height: auto;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 640px) {
+    .unbound-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .heritage-grid {
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
