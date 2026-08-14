@@ -6,7 +6,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import MusicCard from '../components/MusicCard.astro';
 import ArtistCard from '../components/ArtistCard.astro';
 import EventCard from '../components/EventCard.astro';
-import EmptyState from '../components/EmptyState.astro';
+import LaunchState from '../components/LaunchState.astro';
 import Newsletter from '../components/Newsletter.astro';
 import { showDemoContent } from '../config/site';
 
@@ -29,6 +29,20 @@ const upcomingEvents = allEvents
   path="/"
 >
   <Hero />
+
+  <section class="section section--alt" aria-labelledby="beginning-heading">
+    <div class="container">
+      <LaunchState
+        eyebrow="The Beginning"
+        title="A new space for music is taking shape."
+        description="Sarasudha is just getting started. There are no artists, performances or events listed yet, because none of it exists until it's real — and we would rather show you an honest beginning than a borrowed one. What's here today is the foundation: a place for musicians, collaborators and audiences to help build what comes next."
+        primaryLabel="Get Involved"
+        primaryHref="/participate"
+        secondaryLabel="Read Our Story"
+        secondaryHref="/our-story"
+      />
+    </div>
+  </section>
 
   <section class="section" aria-labelledby="music-unbound-heading">
     <div class="container">
@@ -89,11 +103,11 @@ const upcomingEvents = allEvents
     </div>
   </section>
 
-  {
-    featuredPerformances.length > 0 && (
-      <section class="section" aria-labelledby="performances-heading">
-        <div class="container">
-          <SectionHeader as="h2" id="performances-heading" eyebrow="Featured Performances" title="Recent and notable." />
+  <section class="section" aria-labelledby="performances-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="performances-heading" eyebrow="Featured Performances" title="Recent and notable." />
+      {
+        featuredPerformances.length > 0 ? (
           <div class="card-grid">
             {featuredPerformances.map((performance) => (
               <MusicCard
@@ -109,35 +123,51 @@ const upcomingEvents = allEvents
               />
             ))}
           </div>
-        </div>
-      </section>
-    )
-  }
+        ) : (
+          <LaunchState
+            title="The first performance is still ahead of us."
+            description="No performances have been recorded or featured yet. If you'd like yours to be among the first, we'd love to hear from you."
+            primaryLabel="Perform With Us"
+            primaryHref="/participate?path=perform"
+          />
+        )
+      }
+    </div>
+  </section>
 
-  {
-    featuredArtists.length > 0 && (
-      <section class="section section--alt" aria-labelledby="artists-heading">
-        <div class="container">
-          <SectionHeader as="h2" id="artists-heading" title="Voices worth discovering." />
-          <div class="card-grid">
-            {featuredArtists.map((artist) => (
-              <ArtistCard
-                href={`/artists/${artist.data.slug}`}
-                name={artist.data.name}
-                photo={artist.data.photo}
-                photoAlt={artist.data.photoAlt}
-                genre={artist.data.genre}
-                location={artist.data.location}
-                bio={artist.data.bio}
-                isDemoContent={artist.data.isDemoContent}
-              />
-            ))}
-          </div>
-          <a href="/artists" class="btn btn-secondary unbound-cta">Meet the Artists</a>
-        </div>
-      </section>
-    )
-  }
+  <section class="section section--alt" aria-labelledby="artists-heading">
+    <div class="container">
+      <SectionHeader as="h2" id="artists-heading" title="Voices worth discovering." />
+      {
+        featuredArtists.length > 0 ? (
+          <>
+            <div class="card-grid">
+              {featuredArtists.map((artist) => (
+                <ArtistCard
+                  href={`/artists/${artist.data.slug}`}
+                  name={artist.data.name}
+                  photo={artist.data.photo}
+                  photoAlt={artist.data.photoAlt}
+                  genre={artist.data.genre}
+                  location={artist.data.location}
+                  bio={artist.data.bio}
+                  isDemoContent={artist.data.isDemoContent}
+                />
+              ))}
+            </div>
+            <a href="/artists" class="btn btn-secondary unbound-cta">Meet the Artists</a>
+          </>
+        ) : (
+          <LaunchState
+            title="The first voices are yet to come."
+            description="Sarasudha doesn't have artist profiles to show yet — because we haven't invented any, and we won't. If you perform Carnatic, light, devotional or contemporary music, this is an open invitation to be among the first."
+            primaryLabel="Apply to Perform"
+            primaryHref="/participate?path=perform"
+          />
+        )
+      }
+    </div>
+  </section>
 
   <section class="section" aria-labelledby="events-heading">
     <div class="container">
@@ -163,11 +193,11 @@ const upcomingEvents = allEvents
             ))}
           </div>
         ) : (
-          <EmptyState
-            title="New Sarasudha gatherings are being composed."
-            description="Join our community to hear first."
-            ctaLabel="Join the Community"
-            ctaHref="/participate"
+          <LaunchState
+            title="No gatherings are on the calendar yet."
+            description="As soon as a performance, lecture demonstration or conversation is confirmed, it will appear here — not before."
+            primaryLabel="Stay Connected"
+            primaryHref="/participate?path=connect"
           />
         )
       }

@@ -3,10 +3,20 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import ArtistCard from '../../components/ArtistCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import LaunchState from '../../components/LaunchState.astro';
 import { musicTags } from '../../content.config';
 import { showDemoContent } from '../../config/site';
 
 const artists = await getCollection('artists', (entry) => showDemoContent || !entry.data.isDemoContent);
+const hasArtists = artists.length > 0;
+
+const genreGroups = [
+  { title: 'Carnatic', description: 'Vocalists and instrumentalists working within the classical tradition — kritis, ragam-tanam-pallavi, and the improvisational grammar of manodharma.' },
+  { title: 'Light & Devotional', description: 'Telugu light music, bhajans and devotional repertoire — melody that carries across generations and settings.' },
+  { title: 'Contemporary & Fusion', description: 'Artists reinterpreting tradition through new arrangements, instrumentation or collaboration.' },
+  { title: 'Young Artists', description: 'Emerging performers carrying the tradition forward, given a stage from the start rather than after years of waiting.' },
+];
 ---
 
 <BaseLayout
@@ -20,31 +30,29 @@ const artists = await getCollection('artists', (entry) => showDemoContent || !en
     lede="From accomplished musicians to emerging performers, Sarasudha creates space for artists and audiences to find one another."
   />
 
-  <section class="section" aria-labelledby="artists-list-heading">
-    <div class="container">
-      <h2 id="artists-list-heading" class="visually-hidden">Browse artists</h2>
+  {
+    hasArtists ? (
+      <section class="section" aria-labelledby="artists-list-heading">
+        <div class="container">
+          <h2 id="artists-list-heading" class="visually-hidden">Browse artists</h2>
 
-      <div class="artist-controls">
-        <div class="artist-search">
-          <label for="artist-search-input">Search artists</label>
-          <input type="search" id="artist-search-input" placeholder="Search by name or location" data-artist-search />
-        </div>
-        <div class="filters" role="group" aria-label="Filter artists by genre" data-filters>
-          <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
-          {
-            musicTags.map((tag) => (
-              <button type="button" class="filter-chip" data-filter={tag} aria-pressed="false">
-                {tag}
-              </button>
-            ))
-          }
-        </div>
-      </div>
+          <div class="artist-controls">
+            <div class="artist-search">
+              <label for="artist-search-input">Search artists</label>
+              <input type="search" id="artist-search-input" placeholder="Search by name or location" data-artist-search />
+            </div>
+            <div class="filters" role="group" aria-label="Filter artists by genre" data-filters>
+              <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
+              {musicTags.map((tag) => (
+                <button type="button" class="filter-chip" data-filter={tag} aria-pressed="false">
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      <p class="filters__status" data-filter-status role="status">Showing all {artists.length} artists.</p>
+          <p class="filters__status" data-filter-status role="status">Showing all {artists.length} artists.</p>
 
-      {
-        artists.length > 0 ? (
           <div class="artist-grid" data-artist-grid>
             {artists.map((artist) => (
               <div
@@ -65,13 +73,46 @@ const artists = await getCollection('artists', (entry) => showDemoContent || !en
               </div>
             ))}
           </div>
-        ) : (
-          <p class="filters__status">Artist profiles are being added. Check back soon.</p>
-        )
-      }
-      <p class="artist-grid__empty" data-empty-message hidden>No artists match your search.</p>
-    </div>
-  </section>
+          <p class="artist-grid__empty" data-empty-message hidden>No artists match your search.</p>
+        </div>
+      </section>
+    ) : (
+      <>
+        <section class="section" aria-labelledby="first-voices-heading">
+          <div class="container">
+            <LaunchState
+              eyebrow="The First Voices"
+              title="This page is waiting for its first artist."
+              description="Sarasudha does not have artist profiles yet, and we are not going to invent any to fill this space. Every profile that appears here — starting with the first — will belong to a real musician."
+              primaryLabel="Apply to Perform"
+              primaryHref="/participate?path=perform"
+              secondaryLabel="Propose a Collaboration"
+              secondaryHref="/participate?path=collaborate"
+            />
+          </div>
+        </section>
+
+        <section class="section section--alt" aria-labelledby="genres-heading">
+          <div class="container">
+            <SectionHeader
+              as="h2"
+              id="genres-heading"
+              eyebrow="What We're Building Toward"
+              title="The kinds of artists Sarasudha is a home for."
+            />
+            <div class="genre-grid">
+              {genreGroups.map((group) => (
+                <article class="genre-card">
+                  <h3>{group.title}</h3>
+                  <p>{group.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -146,8 +187,34 @@ const artists = await getCollection('artists', (entry) => showDemoContent || !en
     color: var(--color-text-muted);
   }
 
+  .genre-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .genre-card {
+    padding: var(--space-5);
+    border-top: 2px solid var(--color-gold-antique);
+  }
+
+  .genre-card h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .genre-card p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-200);
+  }
+
   @media (min-width: 560px) {
     .artist-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 640px) {
+    .genre-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
