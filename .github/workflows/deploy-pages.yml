@@ -9,6 +9,10 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  # Lets the Configure Pages step turn Pages on for this repo if it isn't
+  # already (see the `enablement: true` input below). Harmless once Pages
+  # is already enabled.
+  administration: write
 
 concurrency:
   group: pages
@@ -37,6 +41,8 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
