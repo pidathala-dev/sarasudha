@@ -20,7 +20,11 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'npm run preview -- --port 4321',
+    // Serves the already-built dist/ with a plain static server rather than
+    // `astro preview`: Astro's preview command daemonizes itself (forks and
+    // returns immediately), which Playwright's webServer treats as the
+    // process having crashed. `serve` stays attached in the foreground.
+    command: 'npm run test:serve',
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
