@@ -86,6 +86,30 @@ society's status today.
 If you're not sure whether a historical statement is safe to publish, treat it as unverified and
 check `docs/HERITAGE_VERIFICATION.md` first.
 
+### Historical chronology
+
+Dated claims about Annamacharya Kalabharati beyond the 1984 registration (e.g. the 1997 Mandapam,
+Vardhanti/Jayanti observances, the 2010 statue-protection appeal) are tracked in
+`docs/HERITAGE_CHRONOLOGY.md` — check it before writing or editing any historical date on the public
+site.
+
+- Use exact dates only where the underlying source is clearly legible — see the Confidence column in
+  `docs/HERITAGE_CHRONOLOGY.md`.
+- Use "family records" or "the archival record" (or similar) when attributing a claim to the
+  recovered chronology — don't state it as plain fact with no source framing.
+- Evidence of *cultural activity* (an appeal, a commemoration, an opening) never by itself
+  establishes *legal/compliance status*. Never infer or imply that the registered society was
+  continuously, legally active across these years just because cultural activity is documented.
+- Don't invent performers, organisers, venues, or programme details beyond what a source states.
+- Any entry marked "internal only" / not yet publicly usable in `docs/HERITAGE_CHRONOLOGY.md` (e.g.
+  the probable 2005 entry) stays out of public copy until its transcription is resolved with
+  confidence — no exceptions for "it's probably right."
+- Don't specify a duration for any gap in the documented record (e.g. never say "a two-decade gap"
+  or similar) unless a source establishes both endpoints. Use neutral language instead — "in later
+  years, the activity became quieter," "the public programme became less visible over time."
+- The latest date in the recovered chronology (currently 2010) is not necessarily the last year of
+  activity — say "among the records recovered so far" rather than implying it was the end.
+
 ### Sarala, Sudha and the Sarasudha name
 
 - **Sarala** (the owner's mother) and **Sudha** (the owner's sister) are separate personal names when

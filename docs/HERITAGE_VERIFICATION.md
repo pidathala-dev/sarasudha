@@ -56,13 +56,37 @@ with documentary evidence:
 Prefer "inspired by," "rooted in," "carries forward the spirit of," or "a new chapter in" wherever
 copy connects 1984 to Sarasudha today.
 
+## Recovered archival chronology
+
+A handwritten family chronology (catalogued as `AKB-CHRONOLOGY-001` — see
+`docs/heritage-sources/README.md`) now indicates cultural activity connected with Annamacharya
+Kalabharati through at least **2010**: a 1997 public appeal and Mandapam opening, Vardhanti/Jayanti
+observances in 1998 and 2001, and a 3 August 2010 public appeal for protection of the statue. Full
+dated detail, sourcing and confidence levels are tracked in `docs/HERITAGE_CHRONOLOGY.md`.
+
+**This does not change any item in the "Outstanding items" table above.** In particular:
+
+> Evidence of cultural activity does not by itself establish continuous legal/compliance status of
+> the registered society.
+
+The 1997–2010 entries describe cultural programming (appeals, commemorations, an opening) — none of
+them are a registration filing, a governance record, or any other document that would bear on items
+1–8 above. Item 6 ("Present legal status of the 1984 society") remains **Unverified** regardless of
+how much cultural activity is documented in this period.
+
+A probable 2005 entry in the same source is not yet legible with sufficient confidence for public
+use — see `docs/HERITAGE_CHRONOLOGY.md`. It must not appear on the public site until resolved.
+
 ## Where these claims live in the codebase
 
 - `src/pages/our-story.astro` — hero, "The Name" section, "Where It Began" heritage section,
-  timeline, P. Ramachandran mention (with an inline code comment pointing back to this file)
+  timeline, P. Ramachandran mention (with an inline code comment pointing back to this file), and
+  the "The Years That Followed" section covering 1997–2010
 - `src/pages/index.astro` — home page heritage section
 - `src/pages/heritage.astro` — archive timeline, historical vs. contemporary archive split
 - `docs/CONTENT_GUIDE.md` — the writing rules that keep new copy inside these constraints
+- `docs/HERITAGE_CHRONOLOGY.md` — the dated, sourced chronology (1997–2010) this section draws from
+- `docs/heritage-sources/README.md` — catalogue of the original materials behind that chronology
 
 ## Updating this file
 
