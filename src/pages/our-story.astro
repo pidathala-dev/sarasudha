@@ -2,46 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
-import Timeline from '../components/Timeline.astro';
 import Quote from '../components/Quote.astro';
 import CTA from '../components/CTA.astro';
-
-const timelineItems = [
-  {
-    marker: '1984',
-    title: 'Annamacharya Kalabharati',
-    subtitle: 'Cuddapah · Regn. No. 217/1984',
-    description: 'A cultural initiative bringing music, artists and community together.',
-  },
-  {
-    marker: '1997',
-    title: 'A community milestone',
-    description: 'Public support for the Mandapam, followed by its opening on 22 May 1997.',
-  },
-  {
-    marker: '1998–2001',
-    title: 'The cultural programme continues',
-    description: 'Vardhanti and Jayanti observances documented across the following years.',
-  },
-  {
-    marker: '2010',
-    title: 'Protecting the legacy',
-    description:
-      'An archival appeal dated 3 August 2010 called for public support for the protection of the statue.',
-  },
-  {
-    marker: '2026',
-    title: 'Sarasudha',
-    description:
-      'A new chapter. A contemporary music platform inspired by that cultural journey — bringing Carnatic tradition, light music and new expression into one space.',
-  },
-  {
-    marker: 'Beyond',
-    title: 'Music across generations',
-    description:
-      'Preserving what deserves to endure. Creating spaces to perform. Helping another generation discover and carry music forward.',
-  },
-];
 ---
 
 <BaseLayout
@@ -86,45 +48,21 @@ const timelineItems = [
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="why-heading">
-    <div class="container container--narrow">
-      <SectionHeader as="h2" id="why-heading" title="Why Sarasudha" />
-      <div class="prose">
-        <p>
-          Music often begins close to home — a voice remembered, a composition heard repeatedly, a
-          concert attended as a child. But what begins personally can travel much further.
-        </p>
-        <p>
-          Sarasudha began with two names, Sarala and Sudha. Their meanings — simplicity and
-          sincerity on one side, nectar and sweetness on the other — became an apt expression of
-          what music itself can be: honest, enriching and capable of staying with us.
-        </p>
-        <p>The name may be personal. The platform is open to everyone.</p>
-        <p>
-          That's why Sarasudha holds Carnatic tradition, light music, devotional expression and
-          contemporary interpretation in the same space — for established musicians and emerging
-          artists alike, and for audiences across generations.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <section class="section" aria-labelledby="heritage-heading">
-    <div class="container">
+    <div class="container container--narrow">
       <SectionHeader
         as="h2"
         id="heritage-heading"
         eyebrow="Where It Began"
-        title="Before Sarasudha, there was Annamacharya Kalabharati."
-        lede="The story reaches back to Cuddapah in 1984, when Annamacharya Kalabharati was established as a cultural initiative bringing music, artists and community together."
+        title="Before Sarasudha, there was Annamacharya Kalabharati."
+        lede="The story reaches back to Cuddapah in 1984, when Annamacharya Kalabharati was established as a cultural initiative centred on music and community."
       />
-      <Timeline items={timelineItems} />
+      <div class="registration-block">
+        <p class="registration-block__name">Annamacharya Kalabharati</p>
+        <p class="registration-block__meta">Cuddapah · Regn. No. 217/1984</p>
+      </div>
       {/* P. Ramachandran's exact formal title is unverified — see docs/HERITAGE_VERIFICATION.md. Do not add a specific title here until confirmed. */}
-      <p class="heritage-note">
-        A cultural initiative centred on music and community, with P. Ramachandran — the owner's
-        father — among its early leaders. Further documentation of this period — photographs,
-        programmes and records — is being gathered as part of the Sarasudha archive.
-      </p>
+      <p class="heritage-note">P. Ramachandran, the owner's father, was among its early leaders.</p>
     </div>
   </section>
 
@@ -134,96 +72,48 @@ const timelineItems = [
         as="h2"
         id="years-followed-heading"
         eyebrow="The Years That Followed"
-        title="The story continued beyond 1984."
+        title="The work continued across the decades."
       />
       <div class="prose">
         <p>
-          Annamacharya Kalabharati was not a single moment in 1984. Family records trace cultural
-          activity across the years that followed — public appeals, commemorations, Jayanti
-          programmes and efforts to create and protect physical spaces connected with that cultural
-          journey.
+          What began in 1984 continued through the years that followed. Family records point to
+          community-supported cultural infrastructure, Annamacharya Jayanti and Vardhanti
+          observances, and later efforts to protect what had been created.
         </p>
+        <p>Those records are now being recovered and documented more fully in the Sarasudha archive.</p>
       </div>
+      <a href="/heritage" class="btn btn-secondary years-cta">Explore the Heritage Archive</a>
 
-      <div class="milestone milestone--featured">
-        <p class="milestone__year">1997</p>
-        <h3>Built with the community.</h3>
+      <div class="quieter-period">
+        <p class="eyebrow">A Quieter Period</p>
+        <h3>Some journeys have pauses.</h3>
         <p>
-          The April 1997 appeal for public contributions was followed by the opening of the Mandapam
-          on 22 May — a tangible expression of a cultural initiative supported beyond its organisers.
+          In later years, the public programme became quieter. The performances and gatherings may
+          have receded, but the records, memories and cultural intent remained.
         </p>
-      </div>
-
-      <div class="milestone">
-        <p class="milestone__year">1998–2001</p>
-        <h3>The programme continues</h3>
-        <p>
-          Subsequent records document Annamacharya Vardhanti and Jayanti observances, including the
-          495th Vardhanti in March 1998 and the 593rd Jayanti in May 2001.
-        </p>
-      </div>
-
-      <div class="milestone">
-        <p class="milestone__year">2010</p>
-        <h3>Preserving what remained</h3>
-        <p>
-          Among the records recovered so far, a handwritten entry dated 3 August 2010 records an
-          appeal to the public for the protection of the statue — a reminder that cultural work is as
-          much about preserving what has been created as creating something new.
-        </p>
-      </div>
-
-      <div class="prose">
-        <p>
-          Together, these fragments reveal a journey that extended across decades — and one that
-          Sarasudha now has the opportunity to document more fully.
-        </p>
-      </div>
-
-      <div class="milestone milestone--bridge">
-        <h3>A quieter period</h3>
-        <p>
-          In the years that followed, the public programme became quieter. But the records, memories
-          and physical traces of that earlier work remained.
-        </p>
-      </div>
-
-      <div class="milestone milestone--bridge">
-        <p class="milestone__year">2026</p>
-        <h3>A new expression</h3>
-        <p>
-          Sarasudha begins from that inheritance — not to recreate the past, but to carry its cultural
-          intent into a platform designed for the way music is performed, discovered and shared today.
-        </p>
-      </div>
-
-      <div class="archive-invite">
-        <h3>Help us complete the story.</h3>
-        <p>
-          The archive is still being reconstructed. If you have photographs, invitations, recordings,
-          newspaper cuttings, programmes or memories connected with Annamacharya Kalabharati, we would
-          like to hear from you.
-        </p>
-        <a href="/participate?path=archive" class="btn btn-secondary">Contribute to the Archive</a>
       </div>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="why-now-heading">
+  <section class="section" aria-labelledby="why-now-heading">
     <div class="container container--narrow">
-      <SectionHeader as="h2" id="why-now-heading" title="Traditions survive through participation, not nostalgia." />
+      <SectionHeader
+        as="h2"
+        id="why-now-heading"
+        eyebrow="2026"
+        title="Not a return to the past. A new expression of its intent."
+      />
       <div class="prose">
         <p>
-          Younger audiences are discovering music differently — through short clips, recommendations
-          and conversation, not only through concert halls. Digital platforms offer a kind of reach
-          that a single hall or city never could, but they also flatten context: a composition
-          without its raga, a performance without the story of the artist behind it.
+          Sarasudha begins from that inheritance, but it is being built for today — for the way
+          music is performed, discovered, shared and remembered now. It brings Carnatic tradition,
+          light music, devotional expression and contemporary interpretation into one space, while
+          creating room for artists and audiences to find each other.
         </p>
         <p>
-          Artists, meanwhile, need spaces that value depth over virality — places built to hold the
-          background of a piece of music, not just the clip. Sarasudha is an attempt to build one of
-          those spaces: to preserve context and stories around music, while still meeting audiences
-          where they already are.
+          Music carries context most feeds strip away — the raga behind a composition, the story
+          behind a performer, the tradition a piece draws from. Sarasudha is built to hold onto that
+          depth while still reaching people where they already are.
         </p>
       </div>
       <Quote attribution="Sarasudha">
@@ -232,7 +122,7 @@ const timelineItems = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="intent-heading">
+  <section class="section section--alt" aria-labelledby="intent-heading">
     <div class="container">
       <SectionHeader as="h2" id="intent-heading" eyebrow="Our Intent" title="Preserve. Perform. Pass on." />
       <div class="pillars">
@@ -256,13 +146,12 @@ const timelineItems = [
   </section>
 
   <CTA
-    eyebrow="Heritage"
-    title="Keeping memory audible."
-    lede="Explore the archive we are building around Annamacharya Kalabharati and the Sarasudha story."
-    primaryLabel="Visit the Heritage Archive"
+    title="The story continues from here."
+    lede="Explore the archive being built around Annamacharya Kalabharati, or find your own place in what Sarasudha becomes next."
+    primaryLabel="Explore the Heritage"
     primaryHref="/heritage"
-    secondaryLabel="Contact Us"
-    secondaryHref="/contact"
+    secondaryLabel="Be Part of Sarasudha"
+    secondaryHref="/participate"
   />
 </BaseLayout>
 
@@ -276,71 +165,49 @@ const timelineItems = [
     margin-bottom: var(--space-6);
   }
 
+  .registration-block {
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+
+  .registration-block__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-400);
+    color: var(--color-maroon);
+  }
+
+  .registration-block__meta {
+    margin-top: var(--space-1);
+    font-size: var(--fs-200);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-accent-teal);
+  }
+
   .heritage-note {
-    margin-top: var(--space-6);
     max-width: 42rem;
     color: var(--color-text-muted);
     font-size: var(--fs-200);
   }
 
-  /* The Years That Followed */
-  .milestone {
-    padding-left: var(--space-6);
-    border-left: 2px solid var(--color-border);
-    margin-bottom: var(--space-7);
-  }
-
-  .milestone h3 {
-    margin-bottom: var(--space-2);
-  }
-
-  .milestone p {
-    color: var(--color-text-muted);
-    max-width: 36rem;
-  }
-
-  .milestone__year {
-    font-family: var(--font-display);
-    font-size: var(--fs-500);
-    color: var(--color-gold-text);
-    margin-bottom: var(--space-2);
-    max-width: none;
-  }
-
-  .milestone--featured {
-    border-left-color: var(--color-gold-antique);
-    border-left-width: 3px;
-    padding: var(--space-6);
-    background: var(--color-warm-white);
-    border-radius: var(--radius-md);
-    border-top: var(--border-hairline);
-    border-right: var(--border-hairline);
-    border-bottom: var(--border-hairline);
-  }
-
-  .milestone--featured .milestone__year {
-    font-size: var(--fs-600);
-  }
-
-  .milestone--bridge {
-    border-left-color: transparent;
-    padding-left: 0;
-  }
-
-  .archive-invite {
+  .years-cta {
     margin-top: var(--space-2);
-    padding-top: var(--space-6);
+  }
+
+  .quieter-period {
+    margin-top: var(--space-8);
+    padding-top: var(--space-7);
     border-top: var(--border-hairline);
+    max-width: 34rem;
   }
 
-  .archive-invite h3 {
-    margin-bottom: var(--space-2);
+  .quieter-period h3 {
+    margin: var(--space-2) 0 var(--space-3);
   }
 
-  .archive-invite p {
+  .quieter-period p:not(.eyebrow) {
     color: var(--color-text-muted);
-    max-width: 36rem;
-    margin-bottom: var(--space-5);
   }
 
   .pillars {

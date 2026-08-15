@@ -66,7 +66,7 @@ const timelineItems = [
   <PageHero
     eyebrow="Heritage"
     title="Keeping memory audible."
-    lede="Music survives not only in compositions, but in people, photographs, programmes, recordings and the stories passed between generations."
+    lede="Photographs, programmes, recordings, documents and memories can preserve what formal histories often leave behind. The Sarasudha archive is being built to bring those fragments together."
     motif="/images/motifs/heritage-motif.svg"
   />
 
@@ -76,13 +76,9 @@ const timelineItems = [
         as="h2"
         id="archive-timeline-heading"
         title="The archive is beginning to speak."
-        lede="Family records are helping reconstruct a cultural journey that extended across decades. What began with Annamacharya Kalabharati in 1984 can now be traced through programmes, community appeals and commemorations into the following decades."
+        lede="Recovered family records are beginning to establish a clearer chronology of Annamacharya Kalabharati — from its registration in 1984 through community activity, commemorations and preservation efforts documented in later decades."
       />
       <Timeline items={timelineItems} />
-      <div class="registration-block">
-        <p class="registration-block__name">Annamacharya Kalabharati</p>
-        <p class="registration-block__meta">Cuddapah · Regn. No. 217/1984</p>
-      </div>
     </div>
   </section>
 
@@ -116,7 +112,7 @@ const timelineItems = [
             <EmptyState
               title="Nothing catalogued here yet."
               description="Material connected to Annamacharya Kalabharati will appear here as it is located and digitised."
-              ctaLabel="Have Something to Share?"
+              ctaLabel="Have Archival Material?"
               ctaHref="/participate?path=archive"
             />
           )
@@ -155,38 +151,16 @@ const timelineItems = [
 
   <CTA
     eyebrow="Contribute"
-    title="Contribute to the Archive"
-    lede="If you have photographs, recordings, programmes or memories connected with Annamacharya Kalabharati or Sarasudha, we would be glad to hear from you."
-    primaryLabel="Contribute to the Archive"
+    title="Help complete the record."
+    lede="If you have photographs, recordings, invitations, programmes, newspaper clippings or memories connected with Annamacharya Kalabharati, they may help fill a missing part of this history."
+    primaryLabel="Share Archival Material"
     primaryHref="/participate?path=archive"
-    secondaryLabel="Contact Us"
+    secondaryLabel="Contact Sarasudha"
     secondaryHref="/contact?reason=Archive%20contribution"
   />
 </BaseLayout>
 
 <style>
-  .registration-block {
-    margin-top: var(--space-6);
-    padding: var(--space-5) var(--space-6);
-    border-top: 2px solid var(--color-gold-antique);
-    max-width: 28rem;
-  }
-
-  .registration-block__name {
-    font-family: var(--font-display);
-    font-size: var(--fs-400);
-    color: var(--color-maroon);
-  }
-
-  .registration-block__meta {
-    margin-top: var(--space-1);
-    font-size: var(--fs-200);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--color-accent-teal);
-  }
-
   .category-grid {
     display: flex;
     flex-wrap: wrap;

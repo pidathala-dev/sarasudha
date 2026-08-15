@@ -49,6 +49,49 @@ to Sarasudha. Prefer concrete, restrained language over superlatives.
 - **One core message per section.** Music Unbound = breadth. Ragam = classical depth. Heritage =
   where this comes from. Don't blend them.
 
+## Page ownership
+
+Every important idea has exactly one primary home. Other pages may reference it in a sentence or two
+and link to the primary source — they should not retell it. Before adding a paragraph, check whether
+the idea already has a home below; if it does, write a one- or two-sentence reference with a link
+instead of a full explanation.
+
+**Our Story owns** (the personal, narrative "why"):
+- the name origin — Sarala + Sudha → Sarasudha, and what each name means (explained fully once, in
+  "The Name" section; every other page/section references it briefly, never re-explains the
+  meanings)
+- the personal-to-public transformation (why a family name became a public platform)
+- Sarasudha's purpose and philosophy — why this platform, why music needs it
+- the high-level historical connection to Annamacharya Kalabharati (that it exists, roughly when,
+  who was involved) — not the detailed chronology
+- the quieter period, told as an emotional/narrative bridge, not a dated gap
+- 2026 and what Sarasudha wants to become
+- Preserve / Perform / Pass On
+
+**Heritage owns** (the archival, evidence-led "what remains"):
+- the detailed, dated chronology (1984 registration, 1997 Mandapam, 1998 Vardhanti, 2001 Jayanti,
+  2010 statue-protection appeal, and any future recovered dates) — this is the *one* place the full
+  timeline renders
+- Regn. No. 217/1984 as a registration reference — state it once per page, not in two places on the
+  same page
+- archive categories, source material, photographs, programmes, documents, recordings
+- the Historical Archive / Contemporary Archive split and digitisation status
+- archive contribution as an activity ("share material," not "join the story")
+
+**The homepage** only teases — one eyebrow, one headline, one or two sentences, one link to
+`/our-story`. It should never contain enough detail that a reader feels they've already read
+Our Story or Heritage.
+
+**Reference, don't retell.** When a page needs to mention something owned elsewhere: state it in one
+sentence, then link to the owning page. Example (on Our Story, referencing Heritage's chronology):
+"Family records show the cultural activity continued across later decades. Explore the documented
+chronology → Heritage." Do not follow that sentence with the chronology itself.
+
+Repeated **factual labels** across pages are fine and expected (e.g. "Annamacharya Kalabharati,"
+"Cuddapah," "Regn. No. 217/1984," "1984," "Sarasudha" will naturally appear on multiple pages).
+Repeated **paragraphs or explanations** are not — if you're about to write a sentence that already
+exists near-verbatim on another page, link to it instead.
+
 ## Genre/tag vocabulary
 
 Use exactly these tags when writing frontmatter (`src/content.config.ts` → `musicTags`), so filters
