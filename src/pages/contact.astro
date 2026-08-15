@@ -6,6 +6,7 @@ import SocialLinks from '../components/SocialLinks.astro';
 import { contact, contactReasons, contactFormEndpoint } from '../config/contact';
 
 const hasEndpoint = Boolean(contactFormEndpoint);
+const hasMailtoFallback = Boolean(contact.email);
 ---
 
 <BaseLayout
@@ -32,7 +33,15 @@ const hasEndpoint = Boolean(contactFormEndpoint);
 
       <div class="contact-form-wrap">
         {
-          !hasEndpoint && (
+          !hasEndpoint && hasMailtoFallback && (
+            <p class="contact-form__notice" role="status">
+              This form isn't connected to a submission service yet. Sending it opens your email
+              app with your message addressed to {contact.email} — finish sending it from there.
+            </p>
+          )
+        }
+        {
+          !hasEndpoint && !hasMailtoFallback && (
             <p class="contact-form__notice" role="status">
               This form is not yet connected to a submission service. It validates and previews
               your message, but does not send it. Please use the email or channels alongside this
@@ -41,7 +50,12 @@ const hasEndpoint = Boolean(contactFormEndpoint);
           )
         }
 
-        <form id="contact-form" novalidate data-has-endpoint={hasEndpoint ? 'true' : 'false'}>
+        <form
+          id="contact-form"
+          novalidate
+          data-has-endpoint={hasEndpoint ? 'true' : 'false'}
+          data-mailto-fallback={!hasEndpoint && hasMailtoFallback ? contact.email : ''}
+        >
           <div class="contact-form__row">
             <FormField type="text" name="name" label="Name" required autocomplete="name" />
             <FormField type="email" name="email" label="Email" required autocomplete="email" />
@@ -157,7 +171,7 @@ const hasEndpoint = Boolean(contactFormEndpoint);
 </style>
 
 <script>
-  import { submitContactForm, hasContactFormEndpoint, type ContactFormPayload } from '../lib/contactForm';
+  import { submitContactForm, hasContactFormEndpoint, buildMailtoLink, type ContactFormPayload } from '../lib/contactForm';
 
   const params = new URLSearchParams(window.location.search);
   const requestedReason = params.get('reason');
@@ -190,6 +204,16 @@ const hasEndpoint = Boolean(contactFormEndpoint);
     };
 
     if (!hasContactFormEndpoint()) {
+      const mailtoFallback = form.dataset.mailtoFallback;
+      if (mailtoFallback) {
+        if (status) {
+          status.textContent = `Opening your email app to send this to ${mailtoFallback}…`;
+          status.dataset.state = '';
+        }
+        window.location.href = buildMailtoLink(payload, mailtoFallback);
+        return;
+      }
+
       if (status) {
         status.textContent =
           'This is a demo form — no submission service is configured yet, so nothing was sent. See README.md for how to connect one.';

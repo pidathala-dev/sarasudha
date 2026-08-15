@@ -24,7 +24,7 @@ export interface ContactDetails {
 }
 
 export const contact: ContactDetails = {
-  email: null,
+  email: 'hello@sarasudha.in',
   location: null,
   instagram: null,
   youtube: null,

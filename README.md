@@ -245,13 +245,14 @@ pointing at a broken file — add the file and they appear automatically.
 
 ## Updating contact information
 
-All contact details live in one file: `src/config/contact.ts`. No email address, phone number, or
-social handle has been invented for this build — every field starts as `null` and is only shown once
-filled in (components omit missing channels gracefully rather than rendering broken links).
+All contact details live in one file: `src/config/contact.ts`. No phone number or social handle has
+been invented for this build — every unfilled field stays `null` and is only shown once filled in
+(components omit missing channels gracefully rather than rendering broken links). `email` is set to
+the real address, `hello@sarasudha.in`.
 
 ```ts
 export const contact: ContactDetails = {
-  email: null,
+  email: 'hello@sarasudha.in',
   location: null,
   instagram: null,
   youtube: null,
@@ -263,16 +264,23 @@ export const contact: ContactDetails = {
 ## The contact form
 
 `/contact` has a complete, validated form UI (name, email, phone, reason, message, consent — see
-`src/components/FormField.astro`), but **Phase 1 ships with no backend**. The integration contract is
-documented in `src/lib/contactForm.ts`:
+`src/components/FormField.astro`), but **Phase 1 ships with no server-side backend**. The
+integration contract is documented in `src/lib/contactForm.ts`, with three possible states
+depending on configuration:
 
-- If `PUBLIC_CONTACT_FORM_ENDPOINT` is unset, the form validates and previews the submission but
-  **does not claim to send it** — a visible notice says so on the page.
-- If set, the form `POST`s a JSON payload (`ContactFormPayload`) to that endpoint and reports success
-  or failure based on the response.
+- If `PUBLIC_CONTACT_FORM_ENDPOINT` is set, the form `POST`s a JSON payload (`ContactFormPayload`)
+  to that endpoint and reports success or failure based on the response.
+- Otherwise, if `src/config/contact.ts`'s `contact.email` is set (currently `hello@sarasudha.in`),
+  submitting the form opens the visitor's own email app via a pre-filled `mailto:` link
+  (`buildMailtoLink()`) — a visible notice says this before they submit. Client-side JS has no way
+  to confirm a `mailto:` link was actually sent, so this path never reports a "message sent"
+  success state, only that the email app was opened.
+- If neither is configured, the form validates and previews the submission but **does not claim to
+  send it** — a visible notice says so on the page.
 
-To go live, point `PUBLIC_CONTACT_FORM_ENDPOINT` at a real endpoint (Formspree, a serverless
-function, etc.) that accepts that payload shape.
+To go live with a real backend instead of the `mailto:` fallback, point
+`PUBLIC_CONTACT_FORM_ENDPOINT` at an endpoint (Formspree, a serverless function, etc.) that accepts
+the `ContactFormPayload` shape — it takes priority over the `mailto:` fallback whenever it's set.
 
 **Anti-spam architecture:** the form includes an invisible honeypot field (`companyWebsite`) —
 real visitors never see or fill it; submissions where it's non-empty are silently dropped
@@ -370,8 +378,9 @@ the "nothing runs until configured" guarantee holds.
 - YouTube embeds use `youtube-nocookie.com`, load only on click (no autoplay, no request until the
   visitor asks for it).
 - External links use `rel="noopener noreferrer"`.
-- The contact form has no working backend until one is explicitly configured (see above) — nothing
-  pretends to submit when it can't.
+- The contact form has no server-side backend until `PUBLIC_CONTACT_FORM_ENDPOINT` is explicitly
+  configured (see above) — until then it falls back to opening a pre-filled `mailto:` link, and
+  never claims to have sent anything it can't confirm was sent.
 - Suggested CSP starting point once you control the hosting response headers: default-src 'self';
   img-src 'self' data:; style-src 'self' 'unsafe-inline' (inline `<style>` is used by Astro's scoped
   CSS); frame-src https://www.youtube-nocookie.com; script-src 'self'. Adjust as needed for whatever
