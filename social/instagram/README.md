@@ -19,6 +19,8 @@ SaaS or network access at render time.
 social/instagram/
   README.md                    This file.
   CONTENT_CALENDAR.md           2-week launch posting plan.
+  LAUNCH_SEQUENCE_7DAY.md       Alternate, faster-paced 7-day launch plan.
+  DESIGN_SPECS.md               Per-post design handoff spec (title/support text/layout/colour).
   MANUAL_SETUP_CHECKLIST.md     Everything a human has to do by hand in the app.
   data/
     theme.mjs                    Brand colours/fonts — mirrors src/styles/tokens.css.
@@ -90,9 +92,10 @@ file — follow the existing functions' structure (they all take
 
 ## Updating the profile bio
 
-Edit `data/profile.mjs`, then update `profile/PROFILE_SETUP.md` to match
-(it's documentation, not generated — keep the two in sync by hand) and
-paste the new bio into the Instagram app directly; there's no API
+Edit `data/profile.mjs` (`profile.bio` is the recommendation; `bioAlternates`
+holds the documented options), then update `profile/PROFILE_SETUP.md` to
+match (it's documentation, not generated — keep the two in sync by hand) and
+paste the chosen bio into the Instagram app directly; there's no API
 connection to push it automatically (see `MANUAL_SETUP_CHECKLIST.md`).
 
 ## How rendering works
@@ -131,10 +134,12 @@ If you hand-edit a story layout, keep new content inside roughly
 
 ## Upload order recommendation
 
-See `CONTENT_CALENDAR.md` for the full two-week plan. Short version: profile
-setup and Highlights before the first feed post goes live, then the six
-feed posts spaced out (not all on day one) with Story reposts and one
-poll/question sticker in between to keep the account active without
+See `CONTENT_CALENDAR.md` for the full two-week plan, or
+`LAUNCH_SEQUENCE_7DAY.md` for a faster-paced one-week alternative — same
+six posts, same honesty constraints, different pacing. Short version either
+way: profile setup and Highlights before the first feed post goes live,
+then the six feed posts spaced out (not all on day one) with Story reposts
+and one poll/question sticker in between to keep the account active without
 inventing content.
 
 ## What this system deliberately does not do
