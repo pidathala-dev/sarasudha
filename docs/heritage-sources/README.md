@@ -43,3 +43,19 @@ non-demo entries), it goes through the normal archive content pipeline
 - **Where used:** `docs/HERITAGE_CHRONOLOGY.md` rows for 1997, 1998, 2001, 2005 (internal only), and
   2010; public copy in `src/pages/our-story.astro` ("The Years That Followed" section) and
   `src/pages/heritage.astro` (archive timeline).
+
+### AKB-PHOTO-001
+
+- **Description:** Six photographs — five from a single day (a statue in Cuddapah under a canopy,
+  the same statue with a group of five men, a close-up of the same statue, an Andhra Pradesh
+  Tourism-signed building at Tallapaka, and a blurry indoor gathering at Tallapaka) plus one
+  separate cropped portrait.
+- **Owner:** Family (Sarasudha owner's family archive)
+- **Date scanned/photographed:** Not yet digitised in this repository. Shared with the assistant
+  as inline chat content during a remote session with no file access — see
+  `docs/HERITAGE_IMAGE_MANIFEST.md` for the full status.
+- **Transcription status:** Not applicable (photographs, not text) — location/date/identity
+  confirmed directly by the owner; see `docs/HERITAGE_IMAGE_MANIFEST.md`.
+- **Where used:** `docs/HERITAGE_IMAGE_MANIFEST.md` (full detail); `src/content/archive/p-ramachandran.md`,
+  `src/content/archive/1997-mandapam-inauguration-cuddapah.md`, `src/content/archive/1997-tallapaka.md`
+  (text-only entries so far — no `image` field until real files are available).

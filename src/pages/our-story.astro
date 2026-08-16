@@ -62,7 +62,9 @@ import CTA from '../components/CTA.astro';
         <p class="registration-block__meta">Cuddapah · Regn. No. 217/1984</p>
       </div>
       {/* P. Ramachandran's exact formal title is unverified — see docs/HERITAGE_VERIFICATION.md. Do not add a specific title here until confirmed. */}
-      <p class="heritage-note">P. Ramachandran, the owner's father, was among its early leaders.</p>
+      <p class="heritage-note">
+        <a href="/heritage/p-ramachandran">P. Ramachandran</a>, the owner's father, was among its early leaders.
+      </p>
     </div>
   </section>
 
@@ -189,6 +191,11 @@ import CTA from '../components/CTA.astro';
     max-width: 42rem;
     color: var(--color-text-muted);
     font-size: var(--fs-200);
+  }
+
+  .heritage-note a {
+    color: var(--color-maroon);
+    font-weight: 600;
   }
 
   .years-cta {

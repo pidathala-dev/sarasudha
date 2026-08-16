@@ -124,6 +124,61 @@ test.describe('Typography assets', () => {
   });
 });
 
+test.describe('First real historical photograph archive entries', () => {
+  test('heritage page lists the three real archive entries with links to their detail pages', async ({ page }) => {
+    await page.goto('/heritage');
+    await expect(page.getByRole('link', { name: /P\. Ramachandran/ })).toHaveAttribute('href', '/heritage/p-ramachandran');
+    await expect(page.getByRole('link', { name: /Mandapam Inauguration, Cuddapah/ })).toHaveAttribute(
+      'href',
+      '/heritage/1997-mandapam-inauguration-cuddapah'
+    );
+    await expect(page.getByRole('link', { name: /Tallapaka — 1997/ })).toHaveAttribute(
+      'href',
+      '/heritage/1997-tallapaka'
+    );
+  });
+
+  test('P. Ramachandran archive detail page renders with no invented formal title', async ({ page }) => {
+    const response = await page.goto('/heritage/p-ramachandran');
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('h1')).toHaveText('P. Ramachandran');
+    const bodyText = (await page.locator('body').innerText()).toLowerCase();
+    expect(bodyText).not.toContain('founder');
+    expect(bodyText).not.toContain('president');
+    expect(bodyText).not.toContain('secretary');
+    await expect(page.locator('body')).toContainText('among its early leaders');
+  });
+
+  test('Cuddapah 1997 Mandapam inauguration detail page renders and does not claim the statue was installed that day', async ({
+    page,
+  }) => {
+    const response = await page.goto('/heritage/1997-mandapam-inauguration-cuddapah');
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('h1')).toContainText('Mandapam Inauguration');
+    const bodyText = (await page.locator('body').innerText()).toLowerCase();
+    expect(bodyText).not.toContain('unveiled');
+    expect(bodyText).not.toContain('statue was installed');
+    await expect(page.locator('body')).toContainText('22 May 1997');
+  });
+
+  test('Tallapaka 1997 detail page renders and links back to the Cuddapah entry for the same day', async ({ page }) => {
+    const response = await page.goto('/heritage/1997-tallapaka');
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('h1')).toContainText('Tallapaka');
+    await expect(page.getByRole('link', { name: '1997 Mandapam inauguration in Cuddapah' })).toHaveAttribute(
+      'href',
+      '/heritage/1997-mandapam-inauguration-cuddapah'
+    );
+  });
+
+  test('our-story links to the P. Ramachandran archive entry without repeating archive detail', async ({ page }) => {
+    await page.goto('/our-story');
+    await expect(page.getByRole('link', { name: 'P. Ramachandran' })).toHaveAttribute('href', '/heritage/p-ramachandran');
+    const bodyText = await page.locator('body').innerText();
+    expect(bodyText).not.toContain('Andhra Pradesh Tourism');
+  });
+});
+
 test.describe('Reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 

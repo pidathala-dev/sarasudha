@@ -3,16 +3,20 @@ interface Props {
   title: string;
   category: string;
   year?: string;
+  location?: string;
   description: string;
   image?: string;
   imageAlt?: string;
   pendingDigitisation?: boolean;
+  href?: string;
 }
 
-const { title, category, year, description, image, imageAlt, pendingDigitisation } = Astro.props;
+const { title, category, year, location, description, image, imageAlt, pendingDigitisation, href } = Astro.props;
+const Tag = href ? 'a' : 'article';
+const meta = [category, year, location].filter(Boolean).join(' · ');
 ---
 
-<article class="archive-card card">
+<Tag class="archive-card card" {...(href ? { href } : {})}>
   {
     image && (
       <div class="media-frame archive-card__image">
@@ -22,17 +26,23 @@ const { title, category, year, description, image, imageAlt, pendingDigitisation
     )
   }
   <div class="archive-card__body">
-    <p class="archive-card__category">{category}{year ? ` · ${year}` : ''}</p>
+    <p class="archive-card__category">{meta}</p>
     <h3 class="archive-card__title">{title}</h3>
     <p class="archive-card__description">{description}</p>
   </div>
-</article>
+</Tag>
 
 <style>
   .archive-card {
     display: flex;
     flex-direction: column;
     background: var(--color-warm-white);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a.archive-card:hover .archive-card__title {
+    color: var(--color-maroon);
   }
 
   .archive-card__image {
