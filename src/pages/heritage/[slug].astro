@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { showDemoContent } from '../../config/site';
+
+export async function getStaticPaths() {
+  const items = await getCollection('archive', (entry) => showDemoContent || !entry.data.isDemoContent);
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const meta = [item.data.category, item.data.year, item.data.location].filter(Boolean).join(' · ');
+---
+
+<BaseLayout title={item.data.title} description={item.data.description} path={`/heritage/${item.id}`}>
+  <article class="archive-detail">
+    <div class="container container--narrow">
+      <Breadcrumbs items={[{ label: 'Heritage', href: '/heritage' }, { label: item.data.title }]} />
+      <p class="eyebrow archive-detail__meta">{meta}</p>
+      <h1>{item.data.title}</h1>
+
+      {
+        item.data.image && (
+          <div class="media-frame archive-detail__image">
+            <img src={item.data.image} alt={item.data.imageAlt ?? ''} />
+            {item.data.pendingDigitisation && <span class="archive-detail__badge">Being digitised</span>}
+          </div>
+        )
+      }
+
+      <p class="archive-detail__summary">{item.data.description}</p>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .archive-detail {
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .archive-detail__meta {
+    margin-top: var(--space-4);
+  }
+
+  .archive-detail h1 {
+    margin-block: var(--space-2) var(--space-5);
+  }
+
+  .archive-detail__image {
+    position: relative;
+    max-width: 40rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .archive-detail__badge {
+    position: absolute;
+    bottom: var(--space-3);
+    left: var(--space-3);
+    background: color-mix(in srgb, var(--color-wine) 88%, transparent);
+    color: var(--color-warm-white);
+    font-size: var(--fs-100);
+    font-weight: 600;
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+  }
+
+  .archive-detail__summary {
+    font-size: var(--fs-300);
+    color: var(--color-text);
+    max-width: 42rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 42rem;
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(a) {
+    color: var(--color-maroon);
+    font-weight: 600;
+  }
+</style>

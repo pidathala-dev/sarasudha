@@ -94,6 +94,8 @@ const archive = defineCollection({
       'Documents',
     ]),
     year: z.string().optional(),
+    /** Where the material was recorded, e.g. "Cuddapah" or "Tallapaka". Owner-supplied only. */
+    location: z.string().optional(),
     description: z.string(),
     image: z.string().optional(),
     imageAlt: z.string().optional(),

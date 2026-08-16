@@ -199,6 +199,13 @@ Don't fabricate archival documents, photographs, or historical specifics. Where 
 digitised yet, say so plainly ("Archive material being digitised") rather than describing content
 that doesn't yet exist in the archive.
 
+**Image identity, date and location metadata.** Where a photograph's identity, date or location has
+been supplied directly by the owner, it may be recorded as owner-supplied archival metadata (e.g.
+"the owner confirmed this was taken at Tallapaka"). Unidentified people, uncertain dates and unclear
+event associations must not be inferred from a photograph itself — not from who appears to be
+present, not from file order, not from resemblance to other photos. If in doubt, ask the owner
+rather than guess, and record what's confirmed vs. still open in `docs/HERITAGE_IMAGE_MANIFEST.md`.
+
 ## Writing for artists
 
 Artist bios in this repository (outside of the four labelled demo profiles) should only describe
