@@ -131,7 +131,7 @@ test.describe('First real historical photograph archive entries', () => {
       'href',
       '/heritage/1997-mandapam-inauguration-cuddapah'
     );
-    await expect(page.getByRole('link', { name: /Tallapaka — 1997/ })).toHaveAttribute(
+    await expect(page.getByRole('link', { name: /Tallapaka — Annamacharya's Birthplace/ })).toHaveAttribute(
       'href',
       '/heritage/1997-tallapaka'
     );
@@ -145,26 +145,26 @@ test.describe('First real historical photograph archive entries', () => {
     expect(response?.status()).toBe(404);
   });
 
-  test('Cuddapah 1997 Mandapam inauguration detail page renders and does not claim the statue was installed that day', async ({
-    page,
-  }) => {
+  test('Cuddapah 1997 Mandapam inauguration detail page renders with simple, factual copy', async ({ page }) => {
     const response = await page.goto('/heritage/1997-mandapam-inauguration-cuddapah');
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toContainText('Mandapam Inauguration');
     const bodyText = (await page.locator('body').innerText()).toLowerCase();
     expect(bodyText).not.toContain('unveiled');
     expect(bodyText).not.toContain('statue was installed');
+    expect(bodyText).not.toContain('predates this occasion');
+    expect(bodyText).not.toContain('appears to');
     await expect(page.locator('body')).toContainText('22 May 1997');
   });
 
-  test('Tallapaka 1997 detail page renders and links back to the Cuddapah entry for the same day', async ({ page }) => {
+  test('Tallapaka detail page renders with simple, factual copy and no speculative language', async ({ page }) => {
     const response = await page.goto('/heritage/1997-tallapaka');
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toContainText('Tallapaka');
-    await expect(page.getByRole('link', { name: '1997 Mandapam inauguration in Cuddapah' })).toHaveAttribute(
-      'href',
-      '/heritage/1997-mandapam-inauguration-cuddapah'
-    );
+    await expect(page.locator('body')).toContainText('birthplace of Annamacharya');
+    const bodyText = (await page.locator('body').innerText()).toLowerCase();
+    expect(bodyText).not.toContain('appears to be a music programme');
+    expect(bodyText).not.toContain('exact occasion has not been documented');
   });
 
   test('our-story mentions P. Ramachandran as plain text, not linked to an unpublished entry', async ({ page }) => {
