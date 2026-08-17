@@ -73,11 +73,15 @@ the statue.
 
 ## Where this is used
 
-- `src/content/archive/p-ramachandran.md` — People entry for the portrait; still no `image` field.
 - `src/content/archive/1997-mandapam-inauguration-cuddapah.md` — Photographs entry; `image` = B,
   with A and E embedded inline in the body.
 - `src/content/archive/1997-tallapaka.md` — Photographs entry; `image` = C, with D embedded inline
   in the body.
+- **P. Ramachandran (People) — not currently published.** The text-only entry
+  (`src/content/archive/p-ramachandran.md`) was removed at the owner's request while the portrait
+  remains unresolved (see below), rather than leave an image-less card live on the public site. It
+  can be recreated once a portrait is identified — the approved copy is preserved in git history
+  (the commit that removed it) if it's needed again.
 
 ## Next steps (blocked on portrait identification)
 
@@ -86,5 +90,6 @@ the statue.
    `incoming/heritage/akb-archive-01/` or elsewhere, gitignored under `/incoming/`).
 2. Once identified, apply the same non-generative optimisation used for the other five images
    (`scripts/process-heritage-images.mjs` as a starting point), add the derivative under
-   `public/images/heritage/`, and populate `image`/`imageAlt` on `p-ramachandran.md`.
+   `public/images/heritage/`, and recreate `src/content/archive/p-ramachandran.md` with
+   `image`/`imageAlt` populated.
 3. Update this manifest's "Status" section once the portrait derivative exists.
