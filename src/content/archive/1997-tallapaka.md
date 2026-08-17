@@ -5,7 +5,9 @@ year: "1997"
 location: "Tallapaka"
 era: "historical"
 description: "Photographs taken at Tallapaka on the same day as the 1997 Mandapam inauguration in Cuddapah, including the site's Andhra Pradesh Tourism signage and a gathering that appears to be a music programme. Tallapaka is traditionally regarded as Annamacharya's birthplace."
-pendingDigitisation: true
+image: "/images/heritage/tallapaka-1997-signage.webp"
+imageAlt: "THALLAPAKA site signage on the building housing the Siddeswara, Chennakesava and Sudarsana Chakra temples, Kadapa district, Andhra Pradesh Tourism"
+pendingDigitisation: false
 isDemoContent: false
 ---
 
@@ -15,4 +17,4 @@ Cuddapah](/heritage/1997-mandapam-inauguration-cuddapah). One image shows the si
 Pradesh Tourism signage; another shows an indoor gathering that appears to be a music programme,
 though the exact occasion has not been documented beyond the date.
 
-The individual photographs are being prepared for publication and will be added here once ready.
+![Blurred indoor photograph of a music programme, with musicians seated before a garlanded statue](/images/heritage/tallapaka-1997-music-programme.webp)
