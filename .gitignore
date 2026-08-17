@@ -23,3 +23,7 @@ npm-debug.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# raw archival source originals — never committed; process locally, then
+# commit only optimised derivatives under public/images/heritage/
+/incoming/

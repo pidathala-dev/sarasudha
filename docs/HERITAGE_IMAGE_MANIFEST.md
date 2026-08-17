@@ -13,14 +13,35 @@ owner's family archive (originating from a local folder the owner referred to as
 `akb-archive-01`), shared with the assistant directly in conversation. The owner confirmed these
 six are the complete set — not a sample of a larger folder.
 
-**Status: pixel files not yet in this repository.** The six images were shared as inline chat
-content during a remote (cloud) Claude Code session, which has no filesystem access to the
-sender's images — only the visual content itself, not a file path. No enhancement, denoising,
-cropping, or derivative generation has been performed, and none of the archive entries below carry
-an `image` field yet. This is recorded plainly rather than worked around, per the project rule
-against fabricating archive content that doesn't exist yet (`docs/CONTENT_GUIDE.md` → "Archive
-material"). The real files need to reach a session with actual filesystem access (a local Claude
-Code session, or the files added to this repository directly) before derivatives can be produced.
+**Status: five of six derivatives are in the repository; the portrait is still outstanding.**
+The original files reached a local session as 20 raw camera JPEGs
+(`incoming/heritage/akb-archive-01/P1010273.JPG`–`P1010292.JPG`, gitignored, not committed) —
+apparently the full camera roll from the same day, not just the six frames previously described to
+the assistant inline. The assistant visually matched five of them against the owner-confirmed
+labels below and produced non-generative derivatives (EXIF-safe orient, crop to subject, resize,
+mild contrast normalisation via `sharp .normalize()`, WebP compression) using
+`scripts/process-heritage-images.mjs`:
+
+| Label | Source file | Derivative |
+| ----- | ----------- | ---------- |
+| A | `P1010278.JPG` | `public/images/heritage/cuddapah-1997-canopy.webp` |
+| B | `P1010282.JPG` | `public/images/heritage/cuddapah-1997-offerings.webp` |
+| E | `P1010273.JPG` | `public/images/heritage/cuddapah-1997-closeup.webp` |
+| C | `P1010289.JPG` | `public/images/heritage/tallapaka-1997-signage.webp` |
+| D | `P1010291.JPG` | `public/images/heritage/tallapaka-1997-music-programme.webp` |
+
+No generative restoration or invented detail was applied — D in particular is genuinely
+motion-blurred in the source and was left blurred rather than sharpened. B was used as the lead
+`image` for the Cuddapah entry (community gathered, offerings visible) and A/E were embedded
+further down the entry body; C is the lead `image` for the Tallapaka entry and D is embedded below
+it.
+
+**The portrait is not among the 20 files.** None of the raw JPEGs is a standalone photograph of an
+individual man — all 20 are statue, temple, or group-event photographs from the same Cuddapah/
+Tallapaka day. The owner was asked whether one of the men visible in the group photographs is
+P. Ramachandran, cropped from an existing group shot, or a separate portrait file, and chose to
+defer this for now rather than have the assistant guess a face from the crowd. `p-ramachandran.md`
+still carries no `image` field. See "Next steps" below.
 
 ## Images and owner-confirmed metadata
 
@@ -52,19 +73,18 @@ the statue.
 
 ## Where this is used
 
-- `src/content/archive/p-ramachandran.md` — People entry for the portrait; no `image` field yet.
-- `src/content/archive/1997-mandapam-inauguration-cuddapah.md` — Photographs entry for A, B, E; no
-  `image`/gallery fields yet.
-- `src/content/archive/1997-tallapaka.md` — Photographs entry for C, D; no `image`/gallery fields
-  yet.
+- `src/content/archive/p-ramachandran.md` — People entry for the portrait; still no `image` field.
+- `src/content/archive/1997-mandapam-inauguration-cuddapah.md` — Photographs entry; `image` = B,
+  with A and E embedded inline in the body.
+- `src/content/archive/1997-tallapaka.md` — Photographs entry; `image` = C, with D embedded inline
+  in the body.
 
-## Next steps (blocked on file access)
+## Next steps (blocked on portrait identification)
 
-1. Get the six original files into a session with real filesystem access (local Claude Code
-   session, or added to the repository under a path excluded from version control until
-   processed).
-2. Apply only non-generative optimisation (rotation, crop to subject, resize, compression, mild
-   tonal normalisation) — no generative restoration or invented detail, per project rule.
-3. Add resulting derivatives under `public/images/heritage/`, and populate the `image`/`imageAlt`
-   fields on the three archive entries above.
-4. Update this manifest's "Status" line once real files exist in the repository.
+1. Get an owner decision on the portrait: point to a specific person in one of the existing group
+   photographs to crop, or supply a separate portrait file (into
+   `incoming/heritage/akb-archive-01/` or elsewhere, gitignored under `/incoming/`).
+2. Once identified, apply the same non-generative optimisation used for the other five images
+   (`scripts/process-heritage-images.mjs` as a starting point), add the derivative under
+   `public/images/heritage/`, and populate `image`/`imageAlt` on `p-ramachandran.md`.
+3. Update this manifest's "Status" section once the portrait derivative exists.
