@@ -125,55 +125,52 @@ test.describe('Typography assets', () => {
 });
 
 test.describe('First real historical photograph archive entries', () => {
-  test('heritage page lists the three real archive entries with links to their detail pages', async ({ page }) => {
+  test('heritage page lists the two real archive entries with links to their detail pages', async ({ page }) => {
     await page.goto('/heritage');
-    await expect(page.getByRole('link', { name: /P\. Ramachandran/ })).toHaveAttribute('href', '/heritage/p-ramachandran');
     await expect(page.getByRole('link', { name: /Mandapam Inauguration, Cuddapah/ })).toHaveAttribute(
       'href',
       '/heritage/1997-mandapam-inauguration-cuddapah'
     );
-    await expect(page.getByRole('link', { name: /Tallapaka — 1997/ })).toHaveAttribute(
+    await expect(page.getByRole('link', { name: /Tallapaka — Annamacharya's Birthplace/ })).toHaveAttribute(
       'href',
       '/heritage/1997-tallapaka'
     );
   });
 
-  test('P. Ramachandran archive detail page renders with no invented formal title', async ({ page }) => {
+  test('the P. Ramachandran archive entry is not published while the portrait is unresolved', async ({ page }) => {
+    await page.goto('/heritage');
+    const bodyText = await page.locator('body').innerText();
+    expect(bodyText).not.toContain('P. Ramachandran');
     const response = await page.goto('/heritage/p-ramachandran');
-    expect(response?.status()).toBe(200);
-    await expect(page.locator('h1')).toHaveText('P. Ramachandran');
-    const bodyText = (await page.locator('body').innerText()).toLowerCase();
-    expect(bodyText).not.toContain('founder');
-    expect(bodyText).not.toContain('president');
-    expect(bodyText).not.toContain('secretary');
-    await expect(page.locator('body')).toContainText('among its early leaders');
+    expect(response?.status()).toBe(404);
   });
 
-  test('Cuddapah 1997 Mandapam inauguration detail page renders and does not claim the statue was installed that day', async ({
-    page,
-  }) => {
+  test('Cuddapah 1997 Mandapam inauguration detail page renders with simple, factual copy', async ({ page }) => {
     const response = await page.goto('/heritage/1997-mandapam-inauguration-cuddapah');
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toContainText('Mandapam Inauguration');
     const bodyText = (await page.locator('body').innerText()).toLowerCase();
     expect(bodyText).not.toContain('unveiled');
     expect(bodyText).not.toContain('statue was installed');
+    expect(bodyText).not.toContain('predates this occasion');
+    expect(bodyText).not.toContain('appears to');
     await expect(page.locator('body')).toContainText('22 May 1997');
   });
 
-  test('Tallapaka 1997 detail page renders and links back to the Cuddapah entry for the same day', async ({ page }) => {
+  test('Tallapaka detail page renders with simple, factual copy and no speculative language', async ({ page }) => {
     const response = await page.goto('/heritage/1997-tallapaka');
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toContainText('Tallapaka');
-    await expect(page.getByRole('link', { name: '1997 Mandapam inauguration in Cuddapah' })).toHaveAttribute(
-      'href',
-      '/heritage/1997-mandapam-inauguration-cuddapah'
-    );
+    await expect(page.locator('body')).toContainText('birthplace of Annamacharya');
+    const bodyText = (await page.locator('body').innerText()).toLowerCase();
+    expect(bodyText).not.toContain('appears to be a music programme');
+    expect(bodyText).not.toContain('exact occasion has not been documented');
   });
 
-  test('our-story links to the P. Ramachandran archive entry without repeating archive detail', async ({ page }) => {
+  test('our-story mentions P. Ramachandran as plain text, not linked to an unpublished entry', async ({ page }) => {
     await page.goto('/our-story');
-    await expect(page.getByRole('link', { name: 'P. Ramachandran' })).toHaveAttribute('href', '/heritage/p-ramachandran');
+    await expect(page.locator('body')).toContainText('P. Ramachandran, the owner\'s father, was among its early leaders.');
+    await expect(page.getByRole('link', { name: 'P. Ramachandran' })).toHaveCount(0);
     const bodyText = await page.locator('body').innerText();
     expect(bodyText).not.toContain('Andhra Pradesh Tourism');
   });
